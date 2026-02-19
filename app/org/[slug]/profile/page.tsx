@@ -65,11 +65,20 @@ export default async function OrganizationProfilePage({
     .eq('organization_id', organizationId)
     .order('sort_order', { ascending: true });
 
+  // Fetch active vacancies for this organization
+  const { data: vacancies } = await supabase
+    .from('vacancies')
+    .select('*')
+    .eq('organization_id', organizationId)
+    .eq('is_active', true)
+    .order('created_at', { ascending: false });
+
   return (
     <OrganizationProfileClient
       organization={organization as Organization}
       initialSkills={(organizationSkills as OrganizationSkill[]) || []}
       initialBenefits={(organizationBenefits as OrganizationBenefit[]) || []}
+      vacancies={(vacancies as Database['public']['Tables']['vacancies']['Row'][]) || []}
       slug={slug}
     />
   );

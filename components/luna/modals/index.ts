@@ -31,3 +31,11 @@ export { EditProfileModal } from './edit-profile-modal';
 export { AddVideoModal } from './add-video-modal';
 export { AddSkillsModal } from './add-skills-modal';
 export { UploadAvatarModal } from './upload-avatar-modal';
+
+// Organization Profile modals
+export { UploadOrganizationLogoModal } from './upload-organization-logo-modal';
+export { UploadOrganizationBannerModal } from './upload-organization-banner-modal';
+export { EditOrganizationProfileModal } from './edit-organization-profile-modal';
+export { EditOrganizationBioModal } from './edit-organization-bio-modal';
+export { ManageOrganizationSkillsModal } from './manage-organization-skills-modal';
+export { AddBenefitModal } from './add-benefit-modal';
