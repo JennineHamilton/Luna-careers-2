@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils';
 export interface LunaSectionLabelProps {
   /** Section label text */
   label: string;
+  /** Optional right-aligned action (e.g. Add button) - renders between separator and trailing edge */
+  action?: React.ReactNode;
   /** Additional className */
   className?: string;
 }
@@ -17,11 +19,12 @@ export interface LunaSectionLabelProps {
  * @example
  * ```tsx
  * <LunaSectionLabel label="Languages" />
- * <LunaSectionLabel label="Professional Experience" />
+ * <LunaSectionLabel label="Skills" action={<button>Add / Edit</button>} />
  * ```
  */
 export function LunaSectionLabel({
   label,
+  action,
   className,
 }: LunaSectionLabelProps) {
   return (
@@ -32,7 +35,8 @@ export function LunaSectionLabel({
       <h3 className="text-sm font-semibold text-luna-gray-900 whitespace-nowrap">
         {label}
       </h3>
-      <div className="flex-1 border-t border-luna-border-default"></div>
+      <div className="flex-1 min-w-0 border-t border-luna-border-default" />
+      {action ? <div className="shrink-0">{action}</div> : null}
     </div>
   );
 }

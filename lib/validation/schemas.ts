@@ -233,6 +233,7 @@ export const userProfileUpdateSchema = z.object({
 
 export const organizationProfileUpdateSchema = z.object({
   description: z.string().max(5000, 'Description must not exceed 5000 characters').optional().nullable(),
+  cover_image_url: urlSchema.optional().nullable(),
   website_url: urlSchema.optional().nullable(),
   industry: z.enum(['technology', 'healthcare', 'finance', 'education', 'retail', 'manufacturing', 'hospitality', 'construction', 'transportation', 'energy', 'telecommunications', 'media', 'real_estate', 'legal', 'consulting', 'nonprofit', 'government', 'other']).optional().nullable(),
   organization_size: z.enum(['startup', 'small', 'medium', 'large', 'enterprise']).optional().nullable(),

@@ -133,18 +133,22 @@ export function LunaEmptyState({
   );
 
   if (showBackground) {
+    const hasFullHeight = className?.includes('h-full');
     return (
       <div
         data-slot="luna-empty-state"
         onClick={onClick}
         className={cn(
           'bg-luna-bg-secondary border border-luna-border-light rounded-lg',
-          config.containerWithBg,
+          hasFullHeight ? 'h-full flex items-center justify-center' : config.containerWithBg,
           isClickable && 'cursor-pointer hover:bg-luna-gray-100 transition-colors',
           className
         )}
       >
-        <div className="flex flex-col items-center justify-center text-center">
+        <div className={cn(
+          'flex flex-col items-center justify-center text-center',
+          hasFullHeight && 'w-full'
+        )}>
           {content}
         </div>
       </div>

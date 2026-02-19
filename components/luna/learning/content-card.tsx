@@ -97,11 +97,11 @@ export function ContentCard({
   return (
     <LunaCard
       padding="none"
-      className="p-2.5 border border-luna-border-default rounded-md shadow-luna-sm hover:shadow-luna-md transition-all duration-300 cursor-pointer h-[420px] flex flex-col"
+      className="p-2.5 border border-luna-border-default rounded-md shadow-luna-sm hover:shadow-luna-md transition-shadow duration-300 cursor-pointer h-[420px] flex flex-col bg-white"
       onClick={onClick}
     >
       {/* Cover Image */}
-      <div className="relative h-48 bg-gradient-to-br from-purple-500 to-blue-500 rounded-md overflow-hidden">
+      <div className="relative h-48 bg-gradient-to-br from-purple-500 to-blue-500 rounded-md overflow-hidden shadow-luna-sm">
         {coverImage ? (
           <Image
             src={coverImage}

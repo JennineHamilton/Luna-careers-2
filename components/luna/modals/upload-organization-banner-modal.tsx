@@ -17,7 +17,7 @@ import {
   LunaButton,
   LunaFileUpload,
 } from '@/components/luna';
-import { Loader2, Building2 } from 'lucide-react';
+import { Loader2, Building2, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -28,6 +28,7 @@ interface UploadOrganizationBannerModalProps {
   onSuccess?: (data?: { cover_image_url?: string | null }) => void;
   currentBannerUrl?: string | null;
   organizationId: string;
+  slug: string;
 }
 
 export function UploadOrganizationBannerModal({
@@ -36,21 +37,22 @@ export function UploadOrganizationBannerModal({
   onSuccess,
   currentBannerUrl,
   organizationId,
+  slug,
 }: UploadOrganizationBannerModalProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [bannerFile, setBannerFile] = useState<File | null>(null);
-  const [shouldRemove, setShouldRemove] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [imageRemoved, setImageRemoved] = useState(false);
 
   // Reset state when modal opens/closes
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
       setBannerFile(null);
-      setShouldRemove(false);
       setError('');
       setPreviewUrl(null);
+      setImageRemoved(false);
     }
     onOpenChange(newOpen);
   };
@@ -60,16 +62,24 @@ export function UploadOrganizationBannerModal({
     if (files.length > 0) {
       const file = files[0];
       setBannerFile(file);
-      setShouldRemove(false);
+      setImageRemoved(false); // User selected a new file, so image is not removed
       // Create preview URL
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
     } else {
       setBannerFile(null);
       setPreviewUrl(null);
-      if (currentBannerUrl) {
-        setShouldRemove(true);
-      }
+    }
+  };
+
+  // Handle removing the preview/current banner
+  const handleRemoveImage = () => {
+    setBannerFile(null);
+    setPreviewUrl(null);
+    setImageRemoved(true); // Mark that user explicitly removed the image
+    // Clean up preview URL if it was created from a file
+    if (previewUrl && previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl);
     }
   };
 
@@ -80,19 +90,17 @@ export function UploadOrganizationBannerModal({
     setLoading(true);
 
     try {
-      const supabase = createClient();
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) throw new Error('Not authenticated');
-
-      // Case 1: User wants to remove banner
-      if (shouldRemove && !bannerFile) {
-        const { error: updateError } = await supabase
-          .from('organizations')
-          .update({ cover_image_url: null })
-          .eq('id', organizationId);
-
-        if (updateError) throw updateError;
-
+      // If no file selected (user removed image or never selected one), remove banner
+      if (!bannerFile || imageRemoved) {
+        const removeRes = await fetch(`/api/organization/profile?slug=${encodeURIComponent(slug)}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cover_image_url: null }),
+        });
+        const removeData = await removeRes.json();
+        if (!removeRes.ok) {
+          throw new Error(removeData.error || 'Failed to remove banner');
+        }
         setLoading(false);
         onOpenChange(false);
         onSuccess?.({ cover_image_url: null });
@@ -100,14 +108,8 @@ export function UploadOrganizationBannerModal({
         return;
       }
 
-      // Case 2: User wants to upload new banner
-      if (!bannerFile) {
-        setError('Please select an image');
-        setLoading(false);
-        return;
-      }
-
-      // Upload banner
+      // Upload new banner
+      const supabase = createClient();
       const fileExt = bannerFile.name.split('.').pop();
       const fileName = `${organizationId}/banner-${Date.now()}.${fileExt}`;
 
@@ -124,13 +126,16 @@ export function UploadOrganizationBannerModal({
         .from('organization-assets')
         .getPublicUrl(fileName);
 
-      // Update organization profile
-      const { error: updateError } = await supabase
-        .from('organizations')
-        .update({ cover_image_url: publicUrl })
-        .eq('id', organizationId);
-
-      if (updateError) throw updateError;
+      // Update organization profile via API (bypasses RLS)
+      const updateRes = await fetch(`/api/organization/profile?slug=${encodeURIComponent(slug)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cover_image_url: publicUrl }),
+      });
+      const updateData = await updateRes.json();
+      if (!updateRes.ok) {
+        throw new Error(updateData.error || 'Failed to update banner');
+      }
 
       setLoading(false);
       onOpenChange(false);
@@ -167,7 +172,7 @@ export function UploadOrganizationBannerModal({
             )}
 
             {/* Current Banner Preview */}
-            {(currentBannerUrl || previewUrl) && (
+            {(currentBannerUrl || previewUrl) && !imageRemoved && (
               <div className="mb-4">
                 <label className="block text-sm font-medium text-luna-gray-900 mb-2">
                   {previewUrl ? 'Preview' : 'Current Banner'}
@@ -179,6 +184,14 @@ export function UploadOrganizationBannerModal({
                     fill
                     className="object-cover"
                   />
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="absolute top-2 right-2 bg-white/90 hover:bg-white rounded-full p-1.5 shadow-md transition-colors z-10"
+                    aria-label="Remove banner"
+                  >
+                    <X className="w-4 h-4 text-luna-gray-700" />
+                  </button>
                 </div>
               </div>
             )}
@@ -191,22 +204,6 @@ export function UploadOrganizationBannerModal({
               helperText="PNG, JPG, or WEBP (max. 5MB). Recommended: 1920x400px"
             />
 
-            {currentBannerUrl && !previewUrl && (
-              <div className="mt-4">
-                <LunaButton
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setShouldRemove(true);
-                    setBannerFile(null);
-                    setPreviewUrl(null);
-                  }}
-                  disabled={loading}
-                >
-                  Remove Current Banner
-                </LunaButton>
-              </div>
-            )}
           </LunaDialogBody>
 
           <LunaDialogFooter>
@@ -221,10 +218,10 @@ export function UploadOrganizationBannerModal({
             <LunaButton
               type="submit"
               variant="primary"
-              disabled={loading || (!bannerFile && !shouldRemove)}
+              disabled={loading}
             >
               {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              {shouldRemove ? 'Remove' : 'Upload'}
+              Save Changes
             </LunaButton>
           </LunaDialogFooter>
         </form>

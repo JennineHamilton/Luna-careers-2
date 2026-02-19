@@ -17,6 +17,7 @@ import {
   Eye,
   EyeOff,
   Camera,
+  Lightbulb,
 } from 'lucide-react';
 import { LunaAvatar } from '@/components/luna/avatar';
 import { LunaButton } from '@/components/luna/button';
@@ -24,11 +25,11 @@ import { LunaBadge } from '@/components/luna/badge';
 import { LunaCard } from '@/components/luna/card';
 import { LunaSwitch } from '@/components/luna/switch';
 import { LunaEmptyState } from '@/components/luna/empty-state';
+import { LunaSectionLabel } from '@/components/luna/section-label';
 import {
   UploadOrganizationLogoModal,
   UploadOrganizationBannerModal,
   EditOrganizationProfileModal,
-  EditOrganizationBioModal,
   ManageOrganizationSkillsModal,
   AddBenefitModal,
 } from '@/components/luna/modals';
@@ -68,11 +69,19 @@ export function OrganizationProfileClient({
     setOrganization(organizationProp);
   }, [organizationProp]);
 
+  // Sync skills and benefits from props when server data changes
+  useEffect(() => {
+    setSkills(initialSkills);
+  }, [initialSkills]);
+
+  useEffect(() => {
+    setBenefits(initialBenefits);
+  }, [initialBenefits]);
+
   // Modal states
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const [uploadLogoModalOpen, setUploadLogoModalOpen] = useState(false);
   const [uploadBannerModalOpen, setUploadBannerModalOpen] = useState(false);
-  const [editBioModalOpen, setEditBioModalOpen] = useState(false);
   const [manageSkillsModalOpen, setManageSkillsModalOpen] = useState(false);
   const [addBenefitModalOpen, setAddBenefitModalOpen] = useState(false);
   const [editingBenefit, setEditingBenefit] = useState<OrganizationBenefit | null>(null);
@@ -119,6 +128,53 @@ export function OrganizationProfileClient({
       router.refresh();
     } catch (err) {
       console.error('Error deleting benefit:', err);
+    }
+  };
+
+  const handleSkillsUpdate = async () => {
+    try {
+      const supabase = createClient();
+      const { data: updatedSkills, error } = await supabase
+        .from('organization_skills')
+        .select(`
+          *,
+          skills (*)
+        `)
+        .eq('organization_id', organization.id)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+
+      if (updatedSkills) {
+        setSkills(updatedSkills as OrganizationSkill[]);
+      }
+      router.refresh();
+    } catch (err) {
+      console.error('Error fetching updated skills:', err);
+      // Still refresh to get data eventually
+      router.refresh();
+    }
+  };
+
+  const handleBenefitsUpdate = async () => {
+    try {
+      const supabase = createClient();
+      const { data: updatedBenefits, error } = await supabase
+        .from('organization_benefits')
+        .select('*')
+        .eq('organization_id', organization.id)
+        .order('sort_order', { ascending: true });
+
+      if (error) throw error;
+
+      if (updatedBenefits) {
+        setBenefits(updatedBenefits as OrganizationBenefit[]);
+      }
+      router.refresh();
+    } catch (err) {
+      console.error('Error fetching updated benefits:', err);
+      // Still refresh to get data eventually
+      router.refresh();
     }
   };
 
@@ -170,37 +226,46 @@ export function OrganizationProfileClient({
   return (
     <div className="-mx-4 md:-mx-6 -mt-4 md:-mt-6 bg-luna-bg-secondary min-h-screen">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-        {/* ═══════════ COMPANY BANNER SECTION ═══════════ */}
-        <div className="relative w-full h-64 bg-luna-gray-100 rounded-lg overflow-hidden mb-6">
-          {organization.cover_image_url ? (
-            <img
-              src={organization.cover_image_url}
-              alt="Company banner"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center text-center px-4">
-              <Camera className="w-12 h-12 text-luna-gray-400 mb-2" />
-              <p className="text-luna-gray-600 font-medium">Add a company banner</p>
-              <p className="text-luna-gray-500 text-sm mt-1">Add a banner that reflects the personality of your company</p>
-            </div>
-          )}
-          <button
-            onClick={() => setUploadBannerModalOpen(true)}
-            className="absolute top-4 right-4 bg-white/90 hover:bg-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors shadow-sm"
-          >
-            <Pencil className="w-4 h-4" />
-            Edit Banner
-          </button>
-        </div>
+        {/* ═══════════ HEADER CONTENT CARD (Banner + Logo + Info) ═══════════ */}
+        <LunaCard
+          padding="none"
+          className="border border-luna-border-light rounded-lg rounded-b-none overflow-hidden border-b-[#E4E7EC]"
+        >
+          {/* Banner */}
+          <div className="relative w-full h-64 bg-luna-bg-primary pt-[10px] px-[10px] pb-0">
+            {organization.cover_image_url ? (
+              <div className="relative w-full h-full rounded-md overflow-hidden bg-white">
+                <img
+                  src={organization.cover_image_url}
+                  alt="Company banner"
+                  className="w-full h-full object-cover rounded-md"
+                />
+              </div>
+            ) : (
+              <div className="w-full h-full rounded-md flex min-h-0">
+                <LunaEmptyState
+                  icon={Camera}
+                  title="Add a company banner"
+                  description="Add a banner that reflects the personality of your company"
+                  size="sm"
+                  showBackground
+                  iconBackground="gray"
+                  className="w-full h-full min-h-0"
+                />
+              </div>
+            )}
+            <button
+              onClick={() => setUploadBannerModalOpen(true)}
+              className="absolute top-6 right-6 bg-white/90 hover:bg-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors shadow-sm"
+            >
+              <Pencil className="w-4 h-4" />
+              Edit Banner
+            </button>
 
-        {/* ═══════════ COMPANY LOGO AND METRICS SECTION ═══════════ */}
-        <div className="relative -mt-20 mb-8">
-          <div className="flex flex-col md:flex-row items-start md:items-end gap-6">
-            {/* Logo */}
-            <div className="relative">
+            {/* Logo positioned 70% inside banner, 30% bleeding out */}
+            <div className="absolute left-[49px] bottom-0 translate-y-[40%]">
               <div
-                className="cursor-pointer group relative"
+                className="cursor-pointer group relative flex items-center justify-center w-[138px] h-[138px] rounded-full bg-white p-[5px] shadow-lg"
                 onClick={() => setUploadLogoModalOpen(true)}
                 title="Click to change logo"
               >
@@ -209,48 +274,59 @@ export function OrganizationProfileClient({
                   alt={organization.name}
                   fallback={getInitials(organization.name)}
                   size="xl"
-                  className="w-32 h-32 border-4 border-white shadow-lg bg-white rounded-full"
+                  className="w-32 h-32 shrink-0 rounded-full overflow-hidden border border-luna-border-default bg-white"
                 />
                 <div className="absolute bottom-0 right-0 bg-luna-blue rounded-full p-2 shadow-md border-2 border-white">
                   <Pencil className="w-4 h-4 text-white" />
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Company Metrics */}
-            <div className="flex-1 flex flex-wrap items-center gap-6 md:gap-8 pb-4">
+          {/* Card body */}
+          <div className="px-6 pt-20 pb-6">
+            {/* Metrics inline row */}
+            <div className="flex flex-wrap items-center gap-6 md:gap-10">
+              {/* Industry */}
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-luna-blue/10 flex items-center justify-center">
-                  <Briefcase className="w-5 h-5 text-luna-blue" />
+                <div className="w-8 h-8 rounded-full bg-luna-gray-100 flex items-center justify-center shrink-0">
+                  <Briefcase className="w-4 h-4 text-luna-gray-600" strokeWidth={1} />
                 </div>
                 <div>
                   <p className="text-xs text-luna-gray-500 font-medium">Industry</p>
-                  <p className="text-sm font-semibold text-luna-gray-900">{getIndustryLabel(organization.industry)}</p>
+                  <p className="text-sm font-medium text-luna-gray-900">
+                    {getIndustryLabel(organization.industry)}
+                  </p>
                 </div>
               </div>
 
+              {/* Company Size */}
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-luna-blue/10 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-luna-blue" />
+                <div className="w-8 h-8 rounded-full bg-luna-gray-100 flex items-center justify-center shrink-0">
+                  <Users className="w-4 h-4 text-luna-gray-600" strokeWidth={1} />
                 </div>
                 <div>
                   <p className="text-xs text-luna-gray-500 font-medium">Company Size</p>
-                  <p className="text-sm font-semibold text-luna-gray-900">{getOrganizationSizeLabel(organization.organization_size)}</p>
+                  <p className="text-sm font-medium text-luna-gray-900">
+                    {getOrganizationSizeLabel(organization.organization_size)}
+                  </p>
                 </div>
               </div>
 
+              {/* Founded Year */}
               {organization.founded_year && (
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-luna-blue/10 flex items-center justify-center">
-                    <Calendar className="w-5 h-5 text-luna-blue" />
+                  <div className="w-8 h-8 rounded-full bg-luna-gray-100 flex items-center justify-center shrink-0">
+                    <Calendar className="w-4 h-4 text-luna-gray-600" strokeWidth={1} />
                   </div>
                   <div>
                     <p className="text-xs text-luna-gray-500 font-medium">Founded</p>
-                    <p className="text-sm font-semibold text-luna-gray-900">{organization.founded_year}</p>
+                    <p className="text-sm font-medium text-luna-gray-900">{organization.founded_year}</p>
                   </div>
                 </div>
               )}
 
+              {/* Edit Button */}
               <div className="ml-auto">
                 <button
                   onClick={() => setEditProfileModalOpen(true)}
@@ -261,40 +337,36 @@ export function OrganizationProfileClient({
                 </button>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* ═══════════ COMPANY DESCRIPTION AND CONTACT SECTION (FULL-WIDTH CARD) ═══════════ */}
-        <LunaCard className="mb-6">
-          <div className="p-6">
-            <div className="flex items-start justify-between mb-4">
+            {/* Separator */}
+            <div className="h-px bg-luna-border-default my-6" />
+
+            {/* Organization name + description */}
+            <div>
               <h2 className="text-xl font-semibold text-luna-gray-900">{organization.name}</h2>
-              <button
-                onClick={() => setEditBioModalOpen(true)}
-                className="p-1 hover:bg-luna-gray-100 rounded transition-colors"
-                title="Edit description"
-              >
-                <Pencil className="w-4 h-4 text-luna-gray-600" />
-              </button>
             </div>
 
-            {/* Description */}
             {organization.bio || organization.description ? (
-              <p className="text-luna-gray-700 leading-relaxed mb-6">
+              <p className="text-sm text-luna-gray-700 leading-[1.4] mt-2">
                 {organization.bio || organization.description}
               </p>
             ) : (
-              <p className="text-luna-gray-400 italic mb-6">No company description added yet.</p>
+              <p className="text-sm text-luna-gray-400 italic mt-2 leading-[1.4]">No company description added yet.</p>
             )}
 
-            {/* Contact Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-luna-border-light">
+            {/* Contact info */}
+            <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3">
               {organization.contact_phone && (
-                <div className="flex items-start gap-3">
-                  <Phone className="w-5 h-5 text-luna-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-luna-gray-100 flex items-center justify-center shrink-0">
+                    <Phone className="w-4 h-4 text-luna-gray-600" strokeWidth={1} />
+                  </div>
                   <div>
-                    <p className="text-xs font-medium text-luna-gray-500">Phone</p>
-                    <a href={`tel:${organization.contact_phone}`} className="text-sm text-luna-gray-900 hover:text-luna-blue transition-colors">
+                    <p className="text-xs text-luna-gray-500 font-medium">Phone</p>
+                    <a
+                      href={`tel:${organization.contact_phone}`}
+                      className="text-sm font-medium text-luna-gray-900 hover:text-luna-blue transition-colors"
+                    >
                       {organization.contact_phone}
                     </a>
                   </div>
@@ -302,11 +374,16 @@ export function OrganizationProfileClient({
               )}
 
               {organization.contact_email && (
-                <div className="flex items-start gap-3">
-                  <Mail className="w-5 h-5 text-luna-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-luna-gray-100 flex items-center justify-center shrink-0">
+                    <Mail className="w-4 h-4 text-luna-gray-600" strokeWidth={1} />
+                  </div>
                   <div>
-                    <p className="text-xs font-medium text-luna-gray-500">Email</p>
-                    <a href={`mailto:${organization.contact_email}`} className="text-sm text-luna-gray-900 hover:text-luna-blue transition-colors">
+                    <p className="text-xs text-luna-gray-500 font-medium">Email</p>
+                    <a
+                      href={`mailto:${organization.contact_email}`}
+                      className="text-sm font-medium text-luna-gray-900 hover:text-luna-blue transition-colors"
+                    >
                       {organization.contact_email}
                     </a>
                   </div>
@@ -314,15 +391,17 @@ export function OrganizationProfileClient({
               )}
 
               {organization.website_url && (
-                <div className="flex items-start gap-3">
-                  <Globe className="w-5 h-5 text-luna-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-luna-gray-100 flex items-center justify-center shrink-0">
+                    <Globe className="w-4 h-4 text-luna-gray-600" strokeWidth={1} />
+                  </div>
                   <div>
-                    <p className="text-xs font-medium text-luna-gray-500">Website</p>
+                    <p className="text-xs text-luna-gray-500 font-medium">Website</p>
                     <a
                       href={organization.website_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-luna-gray-900 hover:text-luna-blue transition-colors"
+                      className="text-sm font-medium text-luna-gray-900 hover:text-luna-blue transition-colors"
                     >
                       {organization.website_url.replace(/^https?:\/\//, '')}
                     </a>
@@ -330,11 +409,13 @@ export function OrganizationProfileClient({
                 </div>
               )}
 
-              <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-luna-gray-400 mt-0.5 shrink-0" />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-luna-gray-100 flex items-center justify-center shrink-0">
+                  <MapPin className="w-4 h-4 text-luna-gray-600" strokeWidth={1} />
+                </div>
                 <div>
-                  <p className="text-xs font-medium text-luna-gray-500">Location</p>
-                  <p className="text-sm text-luna-gray-900">{formatLocation()}</p>
+                  <p className="text-xs text-luna-gray-500 font-medium">Location</p>
+                  <p className="text-sm font-medium text-luna-gray-900">{formatLocation()}</p>
                 </div>
               </div>
             </div>
@@ -342,21 +423,21 @@ export function OrganizationProfileClient({
         </LunaCard>
 
         {/* ═══════════ PROFILE VISIBILITY SECTION (FULL-WIDTH CARD) ═══════════ */}
-        <LunaCard className="mb-6">
+        <LunaCard padding="none" className="rounded-t-none border-t-0 mb-6">
           <div className="p-6">
+            <h3 className="text-sm font-medium text-luna-gray-900 mb-2">Profile Visibility</h3>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                {isProfileVisible ? (
-                  <Eye className="w-5 h-5 text-luna-gray-600" />
-                ) : (
-                  <EyeOff className="w-5 h-5 text-luna-gray-400" />
-                )}
-                <div>
-                  <h3 className="text-base font-semibold text-luna-gray-900">Profile Visibility</h3>
-                  <p className="text-sm text-luna-gray-500 mt-0.5">
-                    {isProfileVisible ? 'Visible to prospects' : 'Hidden from prospects'}
-                  </p>
+                <div className="w-8 h-8 rounded-full bg-luna-gray-100 flex items-center justify-center shrink-0">
+                  {isProfileVisible ? (
+                    <Eye className="w-4 h-4 text-luna-gray-600" strokeWidth={1} />
+                  ) : (
+                    <EyeOff className="w-4 h-4 text-luna-gray-600" strokeWidth={1} />
+                  )}
                 </div>
+                <p className="text-xs text-luna-gray-500 font-medium">
+                  {isProfileVisible ? 'Visible to Visitors' : 'Not Visible to Visitors'}
+                </p>
               </div>
               <LunaSwitch
                 checked={isProfileVisible}
@@ -367,35 +448,45 @@ export function OrganizationProfileClient({
         </LunaCard>
 
         {/* ═══════════ SKILLS SECTION (FULL-WIDTH CARD) ═══════════ */}
-        <LunaCard className="mb-6">
+        <LunaCard padding="none" className="mb-6">
           <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-base font-semibold text-luna-gray-900 mb-1">Skills</h3>
-                <p className="text-sm text-luna-gray-500">Add the list of skills required to work for your company</p>
-              </div>
-              <LunaButton
-                onClick={() => setManageSkillsModalOpen(true)}
-                variant="outline"
-                size="sm"
-                icon={<Plus className="w-4 h-4" />}
-              >
-                Add / Edit
-              </LunaButton>
-            </div>
+            <LunaSectionLabel
+              label="Skills"
+              className="mb-2"
+              action={
+                skills.length > 0 ? (
+                  <button
+                    onClick={() => setManageSkillsModalOpen(true)}
+                    className="inline-flex items-center bg-white border border-luna-border-default rounded-md h-7 px-2 hover:bg-luna-gray-50 transition-colors text-xs"
+                  >
+                    <Plus className="w-4 h-4 mr-1 text-luna-gray-600" />
+                    <span className="text-luna-gray-600">Add / Edit</span>
+                  </button>
+                ) : undefined
+              }
+            />
+            <p className="text-sm text-luna-gray-600 mb-4">
+              Add the list of skills required to work for your company
+            </p>
             {skills.length > 0 ? (
               <div className="flex flex-wrap gap-2">
                 {skills.map((orgSkill) => (
-                  <LunaBadge key={orgSkill.id} variant="primary">
+                  <span
+                    key={orgSkill.id}
+                    className="inline-flex items-center px-3 py-1.5 rounded-full text-sm text-luna-gray-700 bg-blue-50 hover:bg-blue-100 transition-colors"
+                  >
                     {orgSkill.skills.name}
-                  </LunaBadge>
+                  </span>
                 ))}
               </div>
             ) : (
               <LunaEmptyState
-                icon={Briefcase}
-                title="No skills added"
-                description="Add skills to help candidates understand what you're looking for"
+                icon={Lightbulb}
+                iconBackground="blue"
+                showBackground
+                title="Add your skills"
+                description="Add the list of skills required to work for your company"
+                onClick={() => setManageSkillsModalOpen(true)}
                 size="sm"
               />
             )}
@@ -403,29 +494,32 @@ export function OrganizationProfileClient({
         </LunaCard>
 
         {/* ═══════════ COMPANY BENEFITS SECTION (FULL-WIDTH CARD) ═══════════ */}
-        <LunaCard className="mb-6">
+        <LunaCard padding="none" className="mb-6">
           <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-base font-semibold text-luna-gray-900 mb-1">Company Benefits</h3>
-                <p className="text-sm text-luna-gray-500">Add the list of benefits your company offers employees</p>
-              </div>
-              <LunaButton
-                onClick={handleOpenAddBenefit}
-                variant="outline"
-                size="sm"
-                icon={<Plus className="w-4 h-4" />}
-              >
-                Add / Edit
-              </LunaButton>
-            </div>
+            <LunaSectionLabel
+              label="Company Benefits"
+              className="mb-2"
+              action={
+                benefits.length > 0 ? (
+                  <button
+                    onClick={handleOpenAddBenefit}
+                    className="inline-flex items-center bg-white border border-luna-border-default rounded-md h-7 px-2 hover:bg-luna-gray-50 transition-colors text-xs"
+                  >
+                    <Plus className="w-4 h-4 mr-1 text-luna-gray-600" />
+                    <span className="text-luna-gray-600">Add</span>
+                  </button>
+                ) : undefined
+              }
+            />
+            <p className="text-sm text-luna-gray-600 mb-4">
+              Add the list of benefits your company offers employees
+            </p>
             {benefits.length > 0 ? (
               <div className="flex flex-wrap gap-2">
                 {benefits.map((benefit) => (
-                  <LunaBadge
+                  <span
                     key={benefit.id}
-                    variant="default"
-                    className="flex items-center gap-1.5 pl-3 pr-2 py-1.5 cursor-pointer hover:bg-luna-gray-200 transition-colors"
+                    className="inline-flex items-center gap-1.5 pl-3 pr-2 py-1.5 rounded-full text-sm text-luna-gray-700 bg-blue-50 cursor-pointer hover:bg-blue-100 transition-colors"
                     onClick={() => handleEditBenefit(benefit)}
                   >
                     {benefit.benefit_name}
@@ -435,19 +529,22 @@ export function OrganizationProfileClient({
                         e.stopPropagation();
                         handleDeleteBenefit(benefit.id);
                       }}
-                      className="hover:bg-luna-gray-300 rounded-sm p-0.5 transition-colors"
+                      className="hover:bg-blue-200 rounded-full p-0.5 transition-colors"
                       aria-label="Remove benefit"
                     >
-                      <Plus className="w-3.5 h-3.5 rotate-45" />
+                      <Plus className="w-3.5 h-3.5 rotate-45 text-luna-gray-500" />
                     </button>
-                  </LunaBadge>
+                  </span>
                 ))}
               </div>
             ) : (
               <LunaEmptyState
                 icon={Award}
-                title="No benefits added"
-                description="Add company benefits to attract top talent"
+                iconBackground="blue"
+                showBackground
+                title="Add company benefits"
+                description="Add the list of benefits your company offers employees"
+                onClick={handleOpenAddBenefit}
                 size="sm"
               />
             )}
@@ -455,12 +552,12 @@ export function OrganizationProfileClient({
         </LunaCard>
 
         {/* ═══════════ AVAILABLE JOBS SECTION (FULL-WIDTH CARD) ═══════════ */}
-        <LunaCard>
+        <LunaCard padding="none">
           <div className="p-6">
             <h3 className="text-base font-semibold text-luna-gray-900 mb-4">Available Jobs</h3>
             {activeVacancies.length > 0 ? (
-              <div className="space-y-3">
-                {activeVacancies.map((vacancy) => {
+              <div>
+                {activeVacancies.map((vacancy, index) => {
                   const salary = formatSalary(vacancy);
                   const location = vacancy.is_remote
                     ? 'Remote'
@@ -470,34 +567,29 @@ export function OrganizationProfileClient({
                     : 'Full Time';
 
                   return (
-                    <div
-                      key={vacancy.id}
-                      className="flex items-center gap-4 p-4 border border-luna-border-light rounded-lg hover:border-luna-blue/50 transition-colors"
-                    >
-                      <div className="w-12 h-12 rounded-lg bg-luna-gray-100 flex items-center justify-center shrink-0">
-                        <Briefcase className="w-6 h-6 text-luna-gray-400" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-luna-gray-900 mb-1">{vacancy.title}</h4>
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-luna-gray-600">
-                          <span>{location}</span>
-                          <span className="text-luna-gray-300">•</span>
-                          <span>{employmentType}</span>
-                          {salary && (
-                            <>
-                              <span className="text-luna-gray-300">•</span>
-                              <span className="font-medium text-luna-gray-900">{salary}</span>
-                            </>
-                          )}
+                    <div key={vacancy.id}>
+                      <div className="flex items-center gap-4 py-4">
+                        <div className="w-12 h-12 rounded-lg bg-luna-gray-100 flex items-center justify-center shrink-0">
+                          <Briefcase className="w-6 h-6 text-luna-gray-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-luna-gray-900 mb-1">{vacancy.title}</h4>
+                          <div className="flex flex-wrap items-center gap-3 text-sm text-luna-gray-600">
+                            <span>{location}</span>
+                            <span className="text-luna-gray-300">•</span>
+                            <span>{employmentType}</span>
+                            {salary && (
+                              <>
+                                <span className="text-luna-gray-300">•</span>
+                                <span className="font-medium text-luna-gray-900">{salary}</span>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <LunaButton
-                        variant="outline"
-                        size="sm"
-                        onClick={() => router.push(`/u/jobs/${vacancy.id}`)}
-                      >
-                        View
-                      </LunaButton>
+                      {index < activeVacancies.length - 1 && (
+                        <div className="h-px bg-luna-border-default" />
+                      )}
                     </div>
                   );
                 })}
@@ -505,6 +597,8 @@ export function OrganizationProfileClient({
             ) : (
               <LunaEmptyState
                 icon={Briefcase}
+                iconBackground="blue"
+                showBackground
                 title="No active jobs"
                 description="Create job postings to attract candidates"
                 size="sm"
@@ -527,6 +621,7 @@ export function OrganizationProfileClient({
           onSuccess={handleUploadBannerSuccess}
           currentBannerUrl={organization.cover_image_url}
           organizationId={organization.id}
+          slug={slug}
         />
         <EditOrganizationProfileModal
           open={editProfileModalOpen}
@@ -535,22 +630,12 @@ export function OrganizationProfileClient({
           slug={slug}
           onSuccess={handleRefresh}
         />
-        <EditOrganizationBioModal
-          open={editBioModalOpen}
-          onOpenChange={setEditBioModalOpen}
-          currentBio={organization.bio || organization.description}
-          slug={slug}
-          onSuccess={handleRefresh}
-        />
         <ManageOrganizationSkillsModal
           open={manageSkillsModalOpen}
           onOpenChange={setManageSkillsModalOpen}
           organizationId={organization.id}
           initialSkills={skills}
-          onSuccess={() => {
-            handleRefresh();
-            // Skills will be refreshed from server
-          }}
+          onSuccess={handleSkillsUpdate}
         />
         <AddBenefitModal
           open={addBenefitModalOpen}
@@ -560,10 +645,7 @@ export function OrganizationProfileClient({
           }}
           organizationId={organization.id}
           benefit={editingBenefit}
-          onSuccess={() => {
-            handleRefresh();
-            // Benefits will be refreshed from server
-          }}
+          onSuccess={handleBenefitsUpdate}
         />
       </div>
     </div>

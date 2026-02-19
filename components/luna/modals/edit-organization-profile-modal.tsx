@@ -1,6 +1,7 @@
 /**
  * Edit Organization Profile Modal
  * For editing organization information from the profile page
+ * Compact layout: 5 rows of fields including description.
  */
 
 'use client';
@@ -16,6 +17,7 @@ import {
   LunaDialogFooter,
   LunaButton,
   LunaInput,
+  LunaTextarea,
   LunaSearchableSelect,
 } from '@/components/luna';
 import { Loader2, Building2 } from 'lucide-react';
@@ -53,6 +55,8 @@ const organizationSizeOptions = [
   { value: 'enterprise', label: '1000+ Employees' },
 ];
 
+const HTTPS_PREFIX = 'https://';
+
 export function EditOrganizationProfileModal({
   open,
   onOpenChange,
@@ -64,7 +68,6 @@ export function EditOrganizationProfileModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Initialize form data from organization when modal opens
   const [formData, setFormData] = useState({
     name: '',
     industry: '',
@@ -72,13 +75,14 @@ export function EditOrganizationProfileModal({
     founded_year: '',
     contact_email: '',
     contact_phone: '',
-    website_url: '',
+    phone_country_code: '+1',
+    website_path: '', // Without https://
     city: '',
     state: '',
     country: '',
+    description: '',
   });
 
-  // Country and state options
   const countryOptions = useMemo(() => {
     return Country.getAllCountries().map((country) => ({
       value: country.isoCode,
@@ -94,17 +98,23 @@ export function EditOrganizationProfileModal({
     }));
   }, [formData.country]);
 
-  // Update form data when organization changes or modal opens
   useEffect(() => {
     if (open && organization) {
-      // Convert country and state names to ISO codes
       const countryCode = organization.country
         ? Country.getAllCountries().find(c => c.name === organization.country)?.isoCode || ''
         : '';
+      const statesForCountry = countryCode ? State.getStatesOfCountry(countryCode) : [];
+      const stateCode =
+        organization.state && statesForCountry.length > 0
+          ? statesForCountry.find(s => s.name === organization.state)?.isoCode || ''
+          : '';
+      const stateValue = statesForCountry.length > 0 ? stateCode : (organization.state || '');
+      const websiteUrl = organization.website_url || '';
+      const websitePath = websiteUrl.replace(/^https?:\/\//, '');
 
-      const stateCode = organization.state && countryCode
-        ? State.getStatesOfCountry(countryCode).find(s => s.name === organization.state)?.isoCode || ''
-        : '';
+      // Extract country code from phone if present (e.g., "+1 (555) 123-4567" -> "+1")
+      const phone = organization.contact_phone || '';
+      const phoneCountryCode = phone.startsWith('+') ? phone.split(' ')[0] || '+1' : '+1';
 
       setFormData({
         name: organization.name || '',
@@ -112,11 +122,13 @@ export function EditOrganizationProfileModal({
         organization_size: organization.organization_size || '',
         founded_year: organization.founded_year?.toString() || '',
         contact_email: organization.contact_email || '',
-        contact_phone: organization.contact_phone || '',
-        website_url: organization.website_url || '',
+        contact_phone: phone,
+        phone_country_code: phoneCountryCode,
+        website_path: websitePath,
         city: organization.city || '',
-        state: stateCode,
+        state: stateValue,
         country: countryCode,
+        description: organization.description || organization.bio || '',
       });
       setError('');
     }
@@ -130,24 +142,28 @@ export function EditOrganizationProfileModal({
     setLoading(true);
 
     try {
-      // Convert ISO codes back to names for API
       const countryName = formData.country
         ? Country.getAllCountries().find(c => c.isoCode === formData.country)?.name || ''
         : '';
-      const stateName = formData.state && formData.country
-        ? State.getStatesOfCountry(formData.country).find(s => s.isoCode === formData.state)?.name || ''
-        : '';
+      const stateName =
+        formData.country && stateOptions.length > 0 && formData.state
+          ? State.getStatesOfCountry(formData.country).find(s => s.isoCode === formData.state)?.name || ''
+          : (formData.state || '');
+      const website_url = formData.website_path.trim()
+        ? (formData.website_path.startsWith('http') ? formData.website_path : `${HTTPS_PREFIX}${formData.website_path.trim()}`)
+        : null;
 
       const response = await fetch(`/api/organization/profile?slug=${slug}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          description: formData.description || null,
           industry: formData.industry || null,
           organization_size: formData.organization_size || null,
           founded_year: formData.founded_year ? parseInt(formData.founded_year) : null,
           contact_email: formData.contact_email || null,
           contact_phone: formData.contact_phone || null,
-          website_url: formData.website_url || null,
+          website_url,
           city: formData.city || null,
           state: stateName || null,
           country: countryName || null,
@@ -197,7 +213,7 @@ export function EditOrganizationProfileModal({
                 </div>
               )}
 
-              {/* Company Name (read-only) */}
+              {/* Row 1: Company Name */}
               <LunaInput
                 label="Company Name"
                 value={formData.name}
@@ -205,82 +221,106 @@ export function EditOrganizationProfileModal({
                 helperText="Company name cannot be changed from this page"
               />
 
-              {/* Industry */}
-              <LunaSearchableSelect
-                label="Industry"
-                options={industryOptions}
-                value={formData.industry}
-                onValueChange={(value) => setFormData({ ...formData, industry: value })}
-              />
-
-              {/* Organization Size */}
-              <LunaSearchableSelect
-                label="Company Size"
-                options={organizationSizeOptions}
-                value={formData.organization_size}
-                onValueChange={(value) => setFormData({ ...formData, organization_size: value })}
-              />
-
-              {/* Founded Year */}
-              <LunaInput
-                label="Founded Year"
-                type="number"
-                value={formData.founded_year}
-                onChange={(e) => setFormData({ ...formData, founded_year: e.target.value })}
-                placeholder="e.g., 2012"
-              />
-
-              {/* Contact Email */}
-              <LunaInput
-                label="Contact Email"
-                type="email"
-                value={formData.contact_email}
-                onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
-                placeholder="contact@company.com"
-              />
-
-              {/* Contact Phone */}
-              <LunaInput
-                label="Contact Phone"
-                type="tel"
-                value={formData.contact_phone}
-                onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
-                placeholder="+1 (555) 123-4567"
-              />
-
-              {/* Website */}
-              <LunaInput
-                label="Website"
-                type="url"
-                value={formData.website_url}
-                onChange={(e) => setFormData({ ...formData, website_url: e.target.value })}
-                placeholder="https://www.company.com"
-              />
-
-              {/* Location Fields */}
-              <LunaSearchableSelect
-                label="Country"
-                options={countryOptions}
-                value={formData.country}
-                onValueChange={(value) => setFormData({ ...formData, country: value, state: '' })}
-                placeholder="Select country"
-              />
-
-              {formData.country && stateOptions.length > 0 && (
+              {/* Row 2: Industry, Company Size, Founded Year */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <LunaSearchableSelect
-                  label="State/Province"
-                  options={stateOptions}
-                  value={formData.state}
-                  onValueChange={(value) => setFormData({ ...formData, state: value })}
-                  placeholder="Select state/province"
+                  label="Industry"
+                  options={industryOptions}
+                  value={formData.industry}
+                  onValueChange={(value) => setFormData({ ...formData, industry: value })}
                 />
-              )}
+                <LunaSearchableSelect
+                  label="Company Size"
+                  options={organizationSizeOptions}
+                  value={formData.organization_size}
+                  onValueChange={(value) => setFormData({ ...formData, organization_size: value })}
+                />
+                <LunaInput
+                  label="Founded Year"
+                  type="number"
+                  value={formData.founded_year}
+                  onChange={(e) => setFormData({ ...formData, founded_year: e.target.value })}
+                  placeholder="e.g., 2012"
+                />
+              </div>
 
-              <LunaInput
-                label="City"
-                value={formData.city}
-                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                placeholder="City name"
+              {/* Row 3: Contact Email, Contact Phone, Website (with https:// prefix) */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <LunaInput
+                  label="Contact Email"
+                  type="email"
+                  value={formData.contact_email}
+                  onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
+                  placeholder="contact@company.com"
+                />
+                <LunaInput
+                  label="Contact Phone"
+                  type="tel"
+                  value={formData.contact_phone}
+                  onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
+                  placeholder="(555) 123-4567"
+                  countryCode={formData.phone_country_code}
+                  onCountryCodeChange={(code) => setFormData({ ...formData, phone_country_code: code })}
+                />
+                <div>
+                  <label className="block text-sm font-medium text-luna-gray-700 mb-1.5">
+                    Website
+                  </label>
+                  <div className="flex rounded-md border border-luna-border-default bg-white focus-within:ring-2 focus-within:ring-luna-blue focus-within:border-luna-blue">
+                    <span className="inline-flex items-center px-3 text-sm text-luna-gray-500 border-r border-luna-border-default bg-luna-gray-50 rounded-l-md">
+                      https://
+                    </span>
+                    <input
+                      type="text"
+                      value={formData.website_path}
+                      onChange={(e) => setFormData({ ...formData, website_path: e.target.value })}
+                      placeholder="www.company.com"
+                      className="flex-1 min-w-0 rounded-r-md border-0 py-2 px-3 text-sm text-luna-gray-900 placeholder:text-luna-gray-400 focus:ring-0 focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 4: Country, State, City */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <LunaSearchableSelect
+                  label="Country"
+                  options={countryOptions}
+                  value={formData.country}
+                  onValueChange={(value) => setFormData({ ...formData, country: value, state: '' })}
+                  placeholder="Select country"
+                />
+                {formData.country && stateOptions.length > 0 ? (
+                  <LunaSearchableSelect
+                    label="State/Province"
+                    options={stateOptions}
+                    value={formData.state}
+                    onValueChange={(value) => setFormData({ ...formData, state: value })}
+                    placeholder="Select state/province"
+                  />
+                ) : (
+                  <LunaInput
+                    label="State/Province"
+                    value={formData.state}
+                    onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                    placeholder="State or province"
+                  />
+                )}
+                <LunaInput
+                  label="City"
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                  placeholder="City name"
+                />
+              </div>
+
+              {/* Row 5: Description */}
+              <LunaTextarea
+                label="Description"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                placeholder="Tell prospects about your company, its mission, and values..."
+                rows={4}
               />
             </div>
           </LunaDialogBody>

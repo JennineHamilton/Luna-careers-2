@@ -123,6 +123,7 @@ export async function PATCH(request: NextRequest) {
 
     const {
       description,
+      cover_image_url,
       website_url,
       industry,
       organization_size,
@@ -137,25 +138,28 @@ export async function PATCH(request: NextRequest) {
       social_links,
     } = validation.data;
 
-    // Update organization profile
+    // Update organization profile - only include fields that were explicitly sent
+    const updateData: Record<string, unknown> = {
+      updated_at: new Date().toISOString(),
+    };
+    if (description !== undefined) updateData.description = description;
+    if (cover_image_url !== undefined) updateData.cover_image_url = cover_image_url;
+    if (website_url !== undefined) updateData.website_url = website_url;
+    if (industry !== undefined) updateData.industry = industry;
+    if (organization_size !== undefined) updateData.organization_size = organization_size;
+    if (founded_year !== undefined) updateData.founded_year = founded_year;
+    if (employee_count !== undefined) updateData.employee_count = employee_count;
+    if (street_address !== undefined) updateData.street_address = street_address;
+    if (city !== undefined) updateData.city = city;
+    if (state !== undefined) updateData.state = state;
+    if (country !== undefined) updateData.country = country;
+    if (contact_email !== undefined) updateData.contact_email = contact_email;
+    if (contact_phone !== undefined) updateData.contact_phone = contact_phone;
+    if (social_links !== undefined) updateData.social_links = social_links;
+
     const { data: updatedOrg, error: updateError } = await adminClient
       .from('organizations')
-      .update({
-        description,
-        website_url,
-        industry,
-        organization_size,
-        founded_year,
-        employee_count,
-        street_address,
-        city,
-        state,
-        country,
-        contact_email,
-        contact_phone,
-        social_links,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updateData)
       .eq('slug', slug)
       .eq('id', userData.organization_id)
       .select()
