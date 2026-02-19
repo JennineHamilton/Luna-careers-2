@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { 
   Clock, 
@@ -121,9 +122,27 @@ export function ScreeningClient({
   personalityAttemptsByAssessment,
   cognitiveAttemptsByAssessment,
 }: ScreeningClientProps) {
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedAssessment, setSelectedAssessment] = useState<AssessmentTemplate | null>(null);
+
+  // When opening from a prerequisite link (?assessment=id), filter to that assessment
+  useEffect(() => {
+    const assessmentId = searchParams.get('assessment');
+    if (!assessmentId) return;
+    const template = assessments.find((a) => a.id === assessmentId);
+    if (template) {
+      setActiveFilter(getCategory(template));
+      setSearchQuery(template.title);
+      return;
+    }
+    const knowledge = knowledgeAssessments.find((a) => a.id === assessmentId);
+    if (knowledge) {
+      setActiveFilter('skills');
+      setSearchQuery(knowledge.title);
+    }
+  }, [searchParams, assessments, knowledgeAssessments]);
   const [selectedKnowledgeAssessment, setSelectedKnowledgeAssessment] = useState<KnowledgeAssessment | null>(null);
   const [testModalOpen, setTestModalOpen] = useState(false);
   const [knowledgeModalOpen, setKnowledgeModalOpen] = useState(false);

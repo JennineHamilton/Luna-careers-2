@@ -78,8 +78,16 @@ export function LearningPageClient({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Get initial tab from URL
+  // URL focus: when opening from a prerequisite link (?module=id, ?course=id, ?program=id)
+  const focusModuleId = searchParams.get('module');
+  const focusCourseId = searchParams.get('course');
+  const focusProgramId = searchParams.get('program');
+
+  // Get initial tab from URL (focus param takes precedence over tab param)
   const initialTab = (() => {
+    if (focusModuleId) return 'modules' as TabType;
+    if (focusCourseId) return 'courses' as TabType;
+    if (focusProgramId) return 'programs' as TabType;
     const tab = searchParams.get('tab') as TabType;
     if (tab && ['modules', 'courses', 'programs'].includes(tab)) {
       return tab;
@@ -92,9 +100,9 @@ export function LearningPageClient({
   const [levelFilter, setLevelFilter] = useState<string>('all');
   const [priceFilter, setPriceFilter] = useState<string>('all');
 
-  // Filter modules
+  // Filter modules (and optionally restrict to one when ?module=id)
   const filteredModules = useMemo(() => {
-    return modules.filter((module) => {
+    let list = modules.filter((module) => {
       const matchesSearch = searchQuery === '' ||
         module.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (module.description && module.description.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -104,11 +112,13 @@ export function LearningPageClient({
         (priceFilter === 'paid' && !module.is_free);
       return matchesSearch && matchesLevel && matchesPrice;
     });
-  }, [modules, searchQuery, levelFilter, priceFilter]);
+    if (focusModuleId) list = list.filter((m) => m.id === focusModuleId);
+    return list;
+  }, [modules, searchQuery, levelFilter, priceFilter, focusModuleId]);
 
-  // Filter courses
+  // Filter courses (and optionally restrict to one when ?course=id)
   const filteredCourses = useMemo(() => {
-    return courses.filter((course) => {
+    let list = courses.filter((course) => {
       const matchesSearch = searchQuery === '' ||
         course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (course.description && course.description.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -118,11 +128,13 @@ export function LearningPageClient({
         (priceFilter === 'paid' && !course.is_free);
       return matchesSearch && matchesLevel && matchesPrice;
     });
-  }, [courses, searchQuery, levelFilter, priceFilter]);
+    if (focusCourseId) list = list.filter((c) => c.id === focusCourseId);
+    return list;
+  }, [courses, searchQuery, levelFilter, priceFilter, focusCourseId]);
 
-  // Filter programs
+  // Filter programs (and optionally restrict to one when ?program=id)
   const filteredPrograms = useMemo(() => {
-    return programs.filter((program) => {
+    let list = programs.filter((program) => {
       const matchesSearch = searchQuery === '' ||
         program.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (program.description && program.description.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -132,7 +144,9 @@ export function LearningPageClient({
         (priceFilter === 'paid' && !program.is_free);
       return matchesSearch && matchesLevel && matchesPrice;
     });
-  }, [programs, searchQuery, levelFilter, priceFilter]);
+    if (focusProgramId) list = list.filter((p) => p.id === focusProgramId);
+    return list;
+  }, [programs, searchQuery, levelFilter, priceFilter, focusProgramId]);
 
   // Progress helpers
   const getModuleProgress = (moduleId: string) => moduleProgress.find(p => p.module_id === moduleId)?.completion_percentage || 0;

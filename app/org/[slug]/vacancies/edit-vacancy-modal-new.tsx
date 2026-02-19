@@ -17,7 +17,7 @@ import {
   LunaDatePicker,
 } from '@/components/luna';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Briefcase, FileText, DollarSign } from 'lucide-react';
+import { Loader2, Briefcase, FileText, DollarSign, GraduationCap } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import type { Database } from '@/types/database.types';
 import { Country, State, City } from 'country-state-city';
@@ -34,11 +34,24 @@ interface EditVacancyModalProps {
   onSuccess?: () => void;
 }
 
-type Step = 'basic' | 'details' | 'compensation';
+type Step = 'basic' | 'details' | 'compensation' | 'prerequisites';
 
 interface Skill {
   id: string;
   name: string;
+}
+
+interface Assessment {
+  id: string;
+  title: string;
+  type: string;
+  category?: string;
+}
+
+interface LearningContent {
+  id: string;
+  title: string;
+  type: 'module' | 'course' | 'program';
 }
 
 export function EditVacancyModal({
@@ -53,6 +66,8 @@ export function EditVacancyModal({
 
   // Data for dropdowns
   const [skills, setSkills] = useState<Skill[]>([]);
+  const [assessments, setAssessments] = useState<Assessment[]>([]);
+  const [learningContent, setLearningContent] = useState<LearningContent[]>([]);
 
   // Form data - Step 1: Basic Information
   const [title, setTitle] = useState('');
@@ -76,10 +91,14 @@ export function EditVacancyModal({
   const [salaryPeriod, setSalaryPeriod] = useState<'hourly' | 'monthly' | 'yearly'>('yearly');
   const [deadline, setDeadline] = useState<Date | undefined>(undefined);
 
-  // Fetch skills on mount
+  // Form data - Step 4: Prerequisites
+  const [prerequisiteAssessments, setPrerequisiteAssessments] = useState<string[]>([]);
+  const [prerequisiteLearningContent, setPrerequisiteLearningContent] = useState<string[]>([]);
+
+  // Fetch skills, assessments, and learning content on mount
   useEffect(() => {
     if (open) {
-      fetchSkills();
+      fetchData();
     }
   }, [open]);
 
@@ -110,6 +129,17 @@ export function EditVacancyModal({
       setSalaryMin(vacancy.salary_range_min?.toString() || '');
       setSalaryMax(vacancy.salary_range_max?.toString() || '');
       setDeadline(vacancy.application_deadline ? new Date(vacancy.application_deadline) : undefined);
+
+      // Load prerequisites
+      const prerequisiteAssessmentsArray = Array.isArray(vacancy.prerequisite_assessments)
+        ? (vacancy.prerequisite_assessments as any[]).map((a: any) => a.id)
+        : [];
+      const prerequisiteLearningContentArray = Array.isArray(vacancy.prerequisite_learning_content)
+        ? (vacancy.prerequisite_learning_content as any[]).map((c: any) => c.id)
+        : [];
+
+      setPrerequisiteAssessments(prerequisiteAssessmentsArray);
+      setPrerequisiteLearningContent(prerequisiteLearningContentArray);
 
       // Set work location and location fields
       if (vacancy.is_remote) {
@@ -144,7 +174,7 @@ export function EditVacancyModal({
     }
   }, [vacancy, open]);
 
-  const fetchSkills = async () => {
+  const fetchData = async () => {
     const supabase = createClient();
 
     // Fetch skills
@@ -156,6 +186,125 @@ export function EditVacancyModal({
     if (skillsData) {
       setSkills(skillsData);
     }
+
+    // Fetch assessments from multiple sources
+    const allAssessments: Assessment[] = [];
+
+    // 1. Typing/Transcription/Multilingual assessments
+    const { data: typingAssessments } = await supabase
+      .from('assessment_templates')
+      .select('id, title, category')
+      .eq('is_active', true)
+      .in('category', ['typing', 'transcription', 'multilingual'])
+      .order('title');
+
+    if (typingAssessments) {
+      allAssessments.push(...typingAssessments.map(a => ({
+        id: a.id,
+        title: a.title,
+        type: 'typing',
+        category: a.category || undefined,
+      })));
+    }
+
+    // 2. Cognitive assessments
+    const { data: cognitiveAssessments } = await supabase
+      .from('cognitive_templates')
+      .select('id, title')
+      .eq('is_active', true)
+      .order('title');
+
+    if (cognitiveAssessments) {
+      allAssessments.push(...cognitiveAssessments.map(a => ({
+        id: a.id,
+        title: a.title,
+        type: 'cognitive',
+      })));
+    }
+
+    // 3. Personality assessments
+    const { data: personalityAssessments } = await supabase
+      .from('assessment_templates')
+      .select('id, title')
+      .eq('is_active', true)
+      .eq('category', 'personality')
+      .order('title');
+
+    if (personalityAssessments) {
+      allAssessments.push(...personalityAssessments.map(a => ({
+        id: a.id,
+        title: a.title,
+        type: 'personality',
+      })));
+    }
+
+    // 4. Knowledge assessments
+    const { data: knowledgeAssessments } = await supabase
+      .from('knowledge_assessments')
+      .select('id, title, category')
+      .eq('is_published', true)
+      .order('title');
+
+    if (knowledgeAssessments) {
+      allAssessments.push(...knowledgeAssessments.map(a => ({
+        id: a.id,
+        title: a.title,
+        type: 'knowledge',
+        category: a.category || undefined,
+      })));
+    }
+
+    setAssessments(allAssessments);
+
+    // Fetch learning content
+    const allLearningContent: LearningContent[] = [];
+
+    // 1. Modules
+    const { data: modules } = await supabase
+      .from('modules')
+      .select('id, title')
+      .eq('is_published', true)
+      .order('title');
+
+    if (modules) {
+      allLearningContent.push(...modules.map(m => ({
+        id: m.id,
+        title: m.title,
+        type: 'module' as const,
+      })));
+    }
+
+    // 2. Courses
+    const { data: courses } = await supabase
+      .from('courses')
+      .select('id, title')
+      .eq('is_published', true)
+      .order('title');
+
+    if (courses) {
+      allLearningContent.push(...courses.map(c => ({
+        id: c.id,
+        title: c.title,
+        type: 'course' as const,
+      })));
+    }
+
+    // 3. Programs
+    const { data: programs } = await supabase
+      .from('programs')
+      .select('id, title')
+      .eq('is_published', true)
+      .order('title');
+
+    if (programs) {
+      allLearningContent.push(...programs.map(p => ({
+        id: p.id,
+        title: p.title,
+        type: 'program' as const,
+      })));
+    }
+
+    setLearningContent(allLearningContent);
   };
 
   const handleNext = () => {
@@ -169,6 +318,9 @@ export function EditVacancyModal({
     } else if (step === 'details') {
       setError('');
       setStep('compensation');
+    } else if (step === 'compensation') {
+      setError('');
+      setStep('prerequisites');
     }
   };
 
@@ -178,6 +330,8 @@ export function EditVacancyModal({
       setStep('basic');
     } else if (step === 'compensation') {
       setStep('details');
+    } else if (step === 'prerequisites') {
+      setStep('compensation');
     }
   };
 
@@ -208,6 +362,26 @@ export function EditVacancyModal({
       const stateName = country[0] && state[0] ? State.getStateByCodeAndCountry(state[0], country[0])?.name || null : null;
       const cityName = city[0] || null;
 
+      // Build prerequisite arrays with full details
+      const prerequisiteAssessmentsData = prerequisiteAssessments.map(id => {
+        const assessment = assessments.find(a => a.id === id);
+        return assessment ? {
+          id: assessment.id,
+          type: assessment.type,
+          title: assessment.title,
+          category: assessment.category,
+        } : null;
+      }).filter(Boolean);
+
+      const prerequisiteLearningContentData = prerequisiteLearningContent.map(id => {
+        const content = learningContent.find(c => c.id === id);
+        return content ? {
+          id: content.id,
+          type: content.type,
+          title: content.title,
+        } : null;
+      }).filter(Boolean);
+
       const { error: updateError } = await supabase
         .from('vacancies')
         .update({
@@ -226,6 +400,8 @@ export function EditVacancyModal({
           required_skills: requiredSkills,
           preferred_skills: preferredSkills,
           application_deadline: deadline ? deadline.toISOString() : null,
+          prerequisite_assessments: prerequisiteAssessmentsData,
+          prerequisite_learning_content: prerequisiteLearningContentData,
         })
         .eq('id', vacancy.id);
 
@@ -287,7 +463,7 @@ export function EditVacancyModal({
         <LunaDialogHeader>
           <LunaDialogTitle>Edit Vacancy</LunaDialogTitle>
           <LunaDialogDescription>
-            Update vacancy details. All changes will be reflected immediately.
+            Update vacancy details across four steps. All changes will be reflected immediately.
           </LunaDialogDescription>
         </LunaDialogHeader>
 
@@ -333,6 +509,21 @@ export function EditVacancyModal({
               step === 'compensation' ? 'text-luna-blue' : 'text-luna-gray-600'
             }`}>
               Compensation
+            </span>
+          </div>
+
+          <div className="w-12 h-0.5 bg-luna-gray-200" />
+
+          <div className="flex items-center gap-2">
+            <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+              step === 'prerequisites' ? 'bg-luna-blue text-white' : 'bg-luna-gray-200 text-luna-gray-600'
+            }`}>
+              <GraduationCap className="w-4 h-4" />
+            </div>
+            <span className={`text-sm font-medium ${
+              step === 'prerequisites' ? 'text-luna-blue' : 'text-luna-gray-600'
+            }`}>
+              Prerequisites
             </span>
           </div>
         </div>
@@ -517,6 +708,56 @@ export function EditVacancyModal({
               </div>
             </form>
           )}
+
+          {step === 'prerequisites' && (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-luna-gray-700 mb-2">
+                    Required Assessments (Optional)
+                  </label>
+                  <p className="text-sm text-luna-gray-600 mb-3">
+                    Select assessments that candidates must complete before applying to this vacancy.
+                  </p>
+                  <LunaCombobox
+                    options={assessments.map(a => ({
+                      value: a.id,
+                      label: `${a.title} (${a.type}${a.category ? ` - ${a.category}` : ''})`,
+                    }))}
+                    value={prerequisiteAssessments}
+                    onChange={setPrerequisiteAssessments}
+                    placeholder="Select assessments..."
+                    searchPlaceholder="Search assessments..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-luna-gray-700 mb-2">
+                    Required Learning Content (Optional)
+                  </label>
+                  <p className="text-sm text-luna-gray-600 mb-3">
+                    Select modules, courses, or programs that candidates must complete before applying.
+                  </p>
+                  <LunaCombobox
+                    options={learningContent.map(c => ({
+                      value: c.id,
+                      label: `${c.title} (${c.type})`,
+                    }))}
+                    value={prerequisiteLearningContent}
+                    onChange={setPrerequisiteLearningContent}
+                    placeholder="Select learning content..."
+                    searchPlaceholder="Search content..."
+                  />
+                </div>
+
+                <div className="bg-luna-blue/5 border border-luna-blue/20 rounded-lg p-3">
+                  <p className="text-sm text-luna-gray-700">
+                    <strong>Note:</strong> Candidates will only be able to apply if they have completed all selected prerequisites in the system.
+                  </p>
+                </div>
+              </div>
+            </form>
+          )}
         </LunaDialogBody>
 
         <LunaDialogFooter>
@@ -544,15 +785,8 @@ export function EditVacancyModal({
                 Cancel
               </LunaButton>
 
-              {step !== 'compensation' ? (
-                <LunaButton
-                  type="button"
-                  onClick={handleNext}
-                  disabled={loading}
-                >
-                  Next
-                </LunaButton>
-              ) : (
+              {/* Show Next on basic/details/compensation; show Update Vacancy only on prerequisites (step 4) */}
+              {step === 'prerequisites' ? (
                 <LunaButton
                   type="button"
                   onClick={handleSubmit}
@@ -560,6 +794,14 @@ export function EditVacancyModal({
                 >
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Update Vacancy
+                </LunaButton>
+              ) : (
+                <LunaButton
+                  type="button"
+                  onClick={handleNext}
+                  disabled={loading}
+                >
+                  Next
                 </LunaButton>
               )}
             </div>

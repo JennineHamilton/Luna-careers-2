@@ -3606,6 +3606,8 @@ export interface Database {
           updated_at: string | null
           created_by: string | null
           work_location: Database['public']['Enums']['work_location_type'] | null
+          prerequisite_assessments: Json | null
+          prerequisite_learning_content: Json | null
         }
         Insert: {
           id?: string
@@ -3632,6 +3634,8 @@ export interface Database {
           updated_at?: string | null
           created_by?: string | null
           work_location?: Database['public']['Enums']['work_location_type'] | null
+          prerequisite_assessments?: Json | null
+          prerequisite_learning_content?: Json | null
         }
         Update: {
           organization_id?: string
@@ -3657,6 +3661,8 @@ export interface Database {
           updated_at?: string | null
           created_by?: string | null
           work_location?: Database['public']['Enums']['work_location_type'] | null
+          prerequisite_assessments?: Json | null
+          prerequisite_learning_content?: Json | null
         }
         Relationships: [
           {

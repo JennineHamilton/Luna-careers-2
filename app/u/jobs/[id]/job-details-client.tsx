@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LunaCard, LunaCardHeader, LunaCardTitle, LunaCardContent } from '@/components/luna';
 import { LunaButton } from '@/components/luna/button';
@@ -17,6 +17,7 @@ import {
   Calendar,
   Clock,
   CheckCircle,
+  Circle,
   ArrowLeft,
   Send,
   FileText,
@@ -94,6 +95,138 @@ export function JobDetailsClient({
   const [displayCurrency, setDisplayCurrency] = useState<string>('BZD');
   const [displaySalaryMin, setDisplaySalaryMin] = useState<number>(vacancy.salary_range_min || 0);
   const [displaySalaryMax, setDisplaySalaryMax] = useState<number>(vacancy.salary_range_max || 0);
+  const [prerequisitesMet, setPrerequisitesMet] = useState<boolean>(true);
+  const [prerequisitesLoading, setPrerequisitesLoading] = useState<boolean>(false);
+  const [missingPrerequisites, setMissingPrerequisites] = useState<string[]>([]);
+
+  // Check prerequisites completion on mount and when vacancy/user changes
+  useEffect(() => {
+    checkPrerequisites();
+  }, [vacancy?.id, userId]);
+
+  const checkPrerequisites = async () => {
+    setPrerequisitesLoading(true);
+    const supabase = createClient();
+    const missing: string[] = [];
+
+    try {
+      // If no prerequisites, user can apply
+      const hasAssessmentPrereqs =
+        vacancy.prerequisite_assessments &&
+        Array.isArray(vacancy.prerequisite_assessments) &&
+        vacancy.prerequisite_assessments.length > 0;
+      const hasLearningPrereqs =
+        vacancy.prerequisite_learning_content &&
+        Array.isArray(vacancy.prerequisite_learning_content) &&
+        vacancy.prerequisite_learning_content.length > 0;
+
+      if (!hasAssessmentPrereqs && !hasLearningPrereqs) {
+        setMissingPrerequisites([]);
+        setPrerequisitesMet(true);
+        return;
+      }
+
+      // Check assessment prerequisites
+      if (hasAssessmentPrereqs) {
+        for (const assessment of vacancy.prerequisite_assessments as any[]) {
+          let completed = false;
+
+          // Typing/transcription/multilingual: assessment_attempts
+          if (assessment.type === 'typing' || assessment.type === 'transcription' || assessment.type === 'multilingual') {
+            const { data } = await supabase
+              .from('assessment_attempts')
+              .select('id')
+              .eq('user_id', userId)
+              .eq('assessment_template_id', assessment.id)
+              .eq('is_submitted', true)
+              .limit(1);
+            completed = !!data && data.length > 0;
+          } else if (assessment.type === 'personality') {
+            // Personality uses personality_attempts, not assessment_attempts
+            const { data } = await supabase
+              .from('personality_attempts')
+              .select('id')
+              .eq('user_id', userId)
+              .eq('assessment_template_id', assessment.id)
+              .eq('status', 'completed')
+              .limit(1);
+            completed = !!data && data.length > 0;
+          } else if (assessment.type === 'cognitive') {
+            // cognitive_attempts uses status, not is_submitted
+            const { data } = await supabase
+              .from('cognitive_attempts')
+              .select('id')
+              .eq('user_id', userId)
+              .eq('template_id', assessment.id)
+              .eq('status', 'completed')
+              .limit(1);
+            completed = !!data && data.length > 0;
+          } else if (assessment.type === 'knowledge') {
+            const { data } = await supabase
+              .from('knowledge_attempts')
+              .select('id')
+              .eq('user_id', userId)
+              .eq('assessment_id', assessment.id)
+              .eq('status', 'completed')
+              .limit(1);
+            completed = !!data && data.length > 0;
+          }
+
+          if (!completed) {
+            missing.push(assessment.title);
+          }
+        }
+      }
+
+      // Check learning content prerequisites (completion is in progress tables, not enrollments.status)
+      if (hasLearningPrereqs) {
+        for (const content of vacancy.prerequisite_learning_content as any[]) {
+          let completed = false;
+          if (content.type === 'module') {
+            const { data } = await supabase
+              .from('module_progress')
+              .select('id')
+              .eq('user_id', userId)
+              .eq('module_id', content.id)
+              .eq('status', 'completed')
+              .limit(1);
+            completed = !!data && data.length > 0;
+          } else if (content.type === 'course') {
+            const { data } = await supabase
+              .from('course_progress')
+              .select('id')
+              .eq('user_id', userId)
+              .eq('course_id', content.id)
+              .eq('status', 'completed')
+              .limit(1);
+            completed = !!data && data.length > 0;
+          } else if (content.type === 'program') {
+            const { data } = await supabase
+              .from('program_progress')
+              .select('id')
+              .eq('user_id', userId)
+              .eq('program_id', content.id)
+              .eq('status', 'completed')
+              .limit(1);
+            completed = !!data && data.length > 0;
+          }
+
+          if (!completed) {
+            missing.push(content.title);
+          }
+        }
+      }
+
+      setMissingPrerequisites(missing);
+      setPrerequisitesMet(missing.length === 0);
+    } catch (error) {
+      console.error('Error checking prerequisites:', error);
+      // On error, allow application but show warning
+      setPrerequisitesMet(true);
+    } finally {
+      setPrerequisitesLoading(false);
+    }
+  };
 
   const formatEmploymentType = (type: string) => {
     return type.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -203,13 +336,21 @@ export function JobDetailsClient({
             </div>
 
             {!existingApplication && (
-              <LunaButton
-                onClick={() => setApplyModalOpen(true)}
-                className="bg-white text-luna-primary hover:bg-white/90 shrink-0"
-              >
-                <Send className="h-4 w-4 mr-2" />
-                Apply Now
-              </LunaButton>
+              <div className="flex flex-col items-end gap-2">
+                <LunaButton
+                  onClick={() => setApplyModalOpen(true)}
+                  className="bg-white text-luna-primary hover:bg-white/90 shrink-0"
+                  disabled={prerequisitesLoading || !prerequisitesMet}
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  {prerequisitesLoading ? 'Checking...' : 'Apply Now'}
+                </LunaButton>
+                {!prerequisitesLoading && !prerequisitesMet && (
+                  <p className="text-xs text-red-400">
+                    Complete prerequisites to apply
+                  </p>
+                )}
+              </div>
             )}
 
             {existingApplication && (
@@ -358,6 +499,98 @@ export function JobDetailsClient({
               </LunaCard>
             )}
 
+            {/* Prerequisites - always visible when vacancy has prerequisites; show completion status per item */}
+            {((vacancy.prerequisite_assessments && Array.isArray(vacancy.prerequisite_assessments) && vacancy.prerequisite_assessments.length > 0) ||
+              (vacancy.prerequisite_learning_content && Array.isArray(vacancy.prerequisite_learning_content) && vacancy.prerequisite_learning_content.length > 0)) && (
+              <LunaCard>
+                <LunaCardHeader>
+                  <LunaCardTitle className="flex items-center gap-2">
+                    <GraduationCap className="w-5 h-5 text-luna-primary" />
+                    Prerequisites
+                  </LunaCardTitle>
+                </LunaCardHeader>
+                <LunaCardContent className="space-y-4">
+                  {prerequisitesLoading ? (
+                    <p className="text-sm text-gray-600">Checking your progress...</p>
+                  ) : prerequisitesMet ? (
+                    <p className="text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                      You meet the requirements for this job. You can apply below.
+                    </p>
+                  ) : (
+                    <p className="text-sm font-medium text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                      You don&apos;t meet the requirements to apply yet. Complete the required items below to continue.
+                    </p>
+                  )}
+
+                  {vacancy.prerequisite_assessments && Array.isArray(vacancy.prerequisite_assessments) && vacancy.prerequisite_assessments.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Required Assessments</h4>
+                      <div className="space-y-2">
+                        {(vacancy.prerequisite_assessments as any[]).map((assessment: any, index: number) => {
+                          const isCompleted = !prerequisitesLoading && !missingPrerequisites.includes(assessment.title);
+                          return (
+                            <Link
+                              key={index}
+                              href={`/u/screening?assessment=${encodeURIComponent(assessment.id)}`}
+                              className={`flex items-center gap-2 p-2 rounded-lg transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-luna-primary focus:ring-offset-1 ${isCompleted ? 'bg-green-50 border border-green-200 hover:bg-green-100' : 'bg-gray-50'}`}
+                            >
+                              {prerequisitesLoading ? (
+                                <Circle className="w-4 h-4 text-gray-400 shrink-0" aria-hidden />
+                              ) : isCompleted ? (
+                                <CheckCircle className="w-4 h-4 text-green-600 shrink-0" aria-hidden />
+                              ) : (
+                                <Circle className="w-4 h-4 text-gray-400 shrink-0" aria-hidden />
+                              )}
+                              <span className="text-sm text-gray-700">
+                                {assessment.title}
+                                {assessment.category && ` (${assessment.category})`}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {vacancy.prerequisite_learning_content && Array.isArray(vacancy.prerequisite_learning_content) && vacancy.prerequisite_learning_content.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Required Learning Content</h4>
+                      <div className="space-y-2">
+                        {(vacancy.prerequisite_learning_content as any[]).map((content: any, index: number) => {
+                          const isCompleted = !prerequisitesLoading && !missingPrerequisites.includes(content.title);
+                          const learningHref =
+                            content.type === 'module'
+                              ? `/u/learning?module=${encodeURIComponent(content.id)}`
+                              : content.type === 'course'
+                                ? `/u/learning?course=${encodeURIComponent(content.id)}`
+                                : `/u/learning?program=${encodeURIComponent(content.id)}`;
+                          return (
+                            <Link
+                              key={index}
+                              href={learningHref}
+                              className={`flex items-center gap-2 p-2 rounded-lg transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-luna-primary focus:ring-offset-1 ${isCompleted ? 'bg-green-50 border border-green-200 hover:bg-green-100' : 'bg-gray-50'}`}
+                            >
+                              {prerequisitesLoading ? (
+                                <Circle className="w-4 h-4 text-gray-400 shrink-0" aria-hidden />
+                              ) : isCompleted ? (
+                                <CheckCircle className="w-4 h-4 text-green-600 shrink-0" aria-hidden />
+                              ) : (
+                                <Circle className="w-4 h-4 text-gray-400 shrink-0" aria-hidden />
+                              )}
+                              <span className="text-sm text-gray-700">
+                                {content.title}
+                                <span className="text-xs text-gray-500 ml-1">({content.type})</span>
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </LunaCardContent>
+              </LunaCard>
+            )}
+
             {/* Employer Benefits */}
             {organizationBenefits && organizationBenefits.length > 0 && (
               <LunaCard>
@@ -410,12 +643,23 @@ export function JobDetailsClient({
                 ) : (
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-3">Ready to apply?</h3>
+                    {!prerequisitesLoading && !prerequisitesMet && missingPrerequisites.length > 0 && (
+                      <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                        <p className="text-sm font-medium text-amber-900 mb-2">Prerequisites Required:</p>
+                        <ul className="text-xs text-amber-800 space-y-1 ml-4 list-disc">
+                          {missingPrerequisites.map((prereq, index) => (
+                            <li key={index}>{prereq}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     <LunaButton
                       onClick={() => setApplyModalOpen(true)}
                       className="w-full"
                       icon={<Send className="w-4 h-4" />}
+                      disabled={prerequisitesLoading || !prerequisitesMet}
                     >
-                      Apply Now
+                      {prerequisitesLoading ? 'Checking...' : 'Apply Now'}
                     </LunaButton>
                   </div>
                 )}
