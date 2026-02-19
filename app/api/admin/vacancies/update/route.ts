@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
       location_country,
       salary_range_min,
       salary_range_max,
+      salary_period,
       required_skills,
       preferred_skills,
       application_deadline,
@@ -63,6 +64,7 @@ export async function POST(request: NextRequest) {
       updated_at: new Date().toISOString(),
     };
     if (experience_level !== undefined) updatePayload.experience_level = experience_level;
+    if (salary_period !== undefined) updatePayload.salary_period = salary_period;
     if (application_deadline !== undefined) updatePayload.application_deadline = application_deadline;
     if (prerequisite_assessments !== undefined) updatePayload.prerequisite_assessments = prerequisite_assessments;
     if (prerequisite_learning_content !== undefined) updatePayload.prerequisite_learning_content = prerequisite_learning_content;

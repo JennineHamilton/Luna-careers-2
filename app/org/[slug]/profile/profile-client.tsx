@@ -214,10 +214,13 @@ export function OrganizationProfileClient({
     const currency = vacancy.salary_currency || 'USD';
     const min = vacancy.salary_range_min;
     const max = vacancy.salary_range_max;
+    const period = vacancy.salary_period || 'monthly';
+    const periodLabel = period === 'hourly' ? 'hr' : period === 'yearly' ? 'Yr' : 'Mth';
+    const suffix = currency === 'USD' ? periodLabel : currency;
     if (min && max) {
-      return `$${min.toLocaleString()}-${max.toLocaleString()}/${currency === 'USD' ? 'Mth' : currency}`;
+      return `$${min.toLocaleString()}-${max.toLocaleString()}/${suffix}`;
     }
-    if (min) return `$${min.toLocaleString()}+/${currency === 'USD' ? 'Mth' : currency}`;
+    if (min) return `$${min.toLocaleString()}+/${suffix}`;
     return null;
   };
 

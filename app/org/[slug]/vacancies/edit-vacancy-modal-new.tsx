@@ -131,6 +131,9 @@ export function EditVacancyModal({
       setPreferredSkills(preferredSkillsArray);
       setSalaryMin(vacancy.salary_range_min?.toString() || '');
       setSalaryMax(vacancy.salary_range_max?.toString() || '');
+      setSalaryPeriod(
+          (vacancy as { salary_period?: 'hourly' | 'monthly' | 'yearly' }).salary_period || 'monthly'
+        );
       setDeadline(vacancy.application_deadline ? new Date(vacancy.application_deadline) : undefined);
 
       // Load prerequisites
@@ -399,6 +402,7 @@ export function EditVacancyModal({
             location_country: workLocation === 'remote' ? null : countryName,
             salary_range_min: salaryMin ? parseInt(salaryMin) : null,
             salary_range_max: salaryMax ? parseInt(salaryMax) : null,
+            salary_period: salaryPeriod,
             required_skills: requiredSkills,
             preferred_skills: preferredSkills,
             application_deadline: deadline ? deadline.toISOString() : null,
@@ -436,6 +440,7 @@ export function EditVacancyModal({
           location_country: workLocation === 'remote' ? null : countryName,
           salary_range_min: salaryMin ? parseInt(salaryMin) : null,
           salary_range_max: salaryMax ? parseInt(salaryMax) : null,
+          salary_period: salaryPeriod,
           required_skills: requiredSkills,
           preferred_skills: preferredSkills,
           application_deadline: deadline ? deadline.toISOString() : null,

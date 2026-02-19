@@ -369,7 +369,7 @@ export function JobDetailsClient({
           <div className="lg:col-span-2 space-y-4">
             {/* Employer Card */}
             {vacancy.organizations?.slug ? (
-              <Link href={`/org/${vacancy.organizations.slug}`}>
+              <Link href={`/u/employers/${vacancy.organizations.slug}`}>
                 <LunaCard className="hover:shadow-lg transition-shadow cursor-pointer">
                   <LunaCardContent className="p-4">
                     <div className="flex items-center gap-4">

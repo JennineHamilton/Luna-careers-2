@@ -3603,6 +3603,7 @@ export interface Database {
           salary_range_min: number | null
           salary_range_max: number | null
           salary_currency: string | null
+          salary_period: 'hourly' | 'monthly' | 'yearly' | null
           required_skills: Json | null
           preferred_skills: Json | null
           benefits: Json | null
@@ -3631,6 +3632,7 @@ export interface Database {
           salary_range_min?: number | null
           salary_range_max?: number | null
           salary_currency?: string | null
+          salary_period?: 'hourly' | 'monthly' | 'yearly' | null
           required_skills?: Json | null
           preferred_skills?: Json | null
           benefits?: Json | null
@@ -3658,6 +3660,7 @@ export interface Database {
           salary_range_min?: number | null
           salary_range_max?: number | null
           salary_currency?: string | null
+          salary_period?: 'hourly' | 'monthly' | 'yearly' | null
           required_skills?: Json | null
           preferred_skills?: Json | null
           benefits?: Json | null
