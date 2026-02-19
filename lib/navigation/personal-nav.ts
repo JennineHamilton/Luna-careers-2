@@ -32,7 +32,6 @@ export const personalNavigation: NavSection[] = [
     label: 'Settings',
     items: [
       { label: 'Settings', href: '/u/settings', icon: 'Settings' },
-      { label: 'Help & Support', href: '/u/support', icon: 'HelpCircle' },
     ],
   },
 ];
