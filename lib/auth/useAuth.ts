@@ -36,13 +36,6 @@ function mapSupabaseUser(user: User | null): AuthUser | null {
   const lastName = user.user_metadata?.last_name || '';
   const fullName = `${firstName} ${lastName}`.trim() || user.email?.split('@')[0] || 'User';
 
-  console.log('[useAuth] User metadata:', {
-    account_type: user.user_metadata?.account_type,
-    user_role: user.user_metadata?.user_role,
-    organization_id: user.user_metadata?.organization_id,
-    current_context: user.user_metadata?.current_context,
-  });
-
   return {
     id: user.id,
     email: user.email || '',
@@ -114,9 +107,7 @@ export function useAuth(): UseAuthReturn {
     const getInitialSession = async () => {
       setIsLoading(true);
       try {
-        // Prefer getSession() (fast, cookie-based). On some first-load flows right
-        // after login this can briefly return null, so we fall back to getUser()
-        // once before giving up, to avoid needing a manual page refresh.
+        // 1. Try client-side getSession/getUser (works when cookies are readable by JS)
         const { data: { session } } = await supabase.auth.getSession();
         let supabaseUser = session?.user ?? null;
 
@@ -124,8 +115,27 @@ export function useAuth(): UseAuthReturn {
           try {
             const { data: { user: userFromGetUser } } = await supabase.auth.getUser();
             supabaseUser = userFromGetUser ?? null;
-          } catch (innerError) {
-            console.error('Failed to get user after empty session:', innerError);
+          } catch {
+            // Client cannot read session (e.g. HttpOnly cookies in production)
+          }
+        }
+
+        // 2. If still null, fetch from server (server can read HttpOnly cookies)
+        if (!supabaseUser) {
+          try {
+            const res = await fetch('/api/auth/session', { credentials: 'same-origin' });
+            if (res.ok) {
+              const { user: serverUser } = await res.json();
+              if (serverUser?.id) {
+                supabaseUser = {
+                  id: serverUser.id,
+                  email: serverUser.email || '',
+                  user_metadata: serverUser.user_metadata || {},
+                } as User;
+              }
+            }
+          } catch (err) {
+            console.error('Failed to fetch session from server:', err);
           }
         }
 
