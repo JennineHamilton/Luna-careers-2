@@ -307,7 +307,7 @@ export function CourseDetailsClient({
   return (
     <div className="min-h-screen">
       {/* Hero Section - Full Bleed with Dark Blue Luna Color */}
-      <div className="-mx-4 md:-mx-6 -mt-4 md:-mt-6 bg-gradient-to-br from-[#00185f] via-[#001a70] to-[#002080] text-white py-6 md:py-8 relative" style={{ marginTop: '-1.5rem' }}>
+      <div className="-mx-4 md:-mx-6 -mt-4 md:-mt-6 bg-gradient-to-br from-[#00185f] via-[#001a70] to-[#002080] text-white py-6 md:py-8 relative">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           {/* Back Button */}
           <LunaButton

@@ -47,6 +47,13 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
     setIsSidebarCollapsed(collapsed);
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
+  // Avoid rendering layout-dependent UI until we've run the first
+  // client-side layout effect (so header/sidebar measurements match
+  // the actual viewport on first paint).
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <LayoutContext.Provider
       value={{

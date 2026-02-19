@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
@@ -58,7 +58,9 @@ export function useAuth(): UseAuthReturn {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const supabase = createClient();
+  // Create a single browser client instance per hook lifecycle to avoid
+  // re-running auth effects and subscriptions on every render.
+  const supabase = useMemo(() => createClient(), []);
 
   const fetchExtendedUserData = useCallback(async (supabaseUser: User | null): Promise<AuthUser | null> => {
     if (!supabaseUser) return null;
@@ -112,11 +114,21 @@ export function useAuth(): UseAuthReturn {
     const getInitialSession = async () => {
       setIsLoading(true);
       try {
-        // Use getSession() first: it reads from cookie/cache and avoids a server
-        // round-trip, so the header shows the user immediately on first load
-        // instead of flashing "U" until getUser() returns.
+        // Prefer getSession() (fast, cookie-based). On some first-load flows right
+        // after login this can briefly return null, so we fall back to getUser()
+        // once before giving up, to avoid needing a manual page refresh.
         const { data: { session } } = await supabase.auth.getSession();
-        const supabaseUser = session?.user ?? null;
+        let supabaseUser = session?.user ?? null;
+
+        if (!supabaseUser) {
+          try {
+            const { data: { user: userFromGetUser } } = await supabase.auth.getUser();
+            supabaseUser = userFromGetUser ?? null;
+          } catch (innerError) {
+            console.error('Failed to get user after empty session:', innerError);
+          }
+        }
+
         if (cancelled) return;
         const extendedUser = await fetchExtendedUserData(supabaseUser);
         if (cancelled) return;
