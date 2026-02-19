@@ -63,29 +63,43 @@ export function useAuth(): UseAuthReturn {
 
     try {
       // Fetch user's avatar_url from users table
-      const { data: userData } = await supabase
+      const { data: userData, error: userError } = await supabase
         .from('users')
         .select('avatar_url')
         .eq('id', supabaseUser.id)
         .single();
 
-      baseUser.avatarUrl = userData?.avatar_url || null;
+      if (userError) {
+        console.warn('[useAuth] Failed to fetch user avatar:', userError);
+      } else {
+        baseUser.avatarUrl = userData?.avatar_url || null;
+      }
 
       // If user has an organization, fetch organization logo
       if (baseUser.organizationId) {
-        const { data: orgData } = await supabase
-          .from('organizations')
-          .select('logo_url, name')
-          .eq('id', baseUser.organizationId)
-          .single();
+        try {
+          const { data: orgData, error: orgError } = await supabase
+            .from('organizations')
+            .select('logo_url, name')
+            .eq('id', baseUser.organizationId)
+            .single();
 
-        baseUser.organizationLogoUrl = orgData?.logo_url || null;
-        baseUser.organizationName = orgData?.name || null;
+          if (orgError) {
+            console.warn('[useAuth] Failed to fetch org data:', orgError);
+          } else {
+            baseUser.organizationLogoUrl = orgData?.logo_url || null;
+            baseUser.organizationName = orgData?.name || null;
+          }
+        } catch (orgError) {
+          console.warn('[useAuth] Error fetching org data:', orgError);
+          // Continue without org data
+        }
       }
 
       return baseUser;
     } catch (error) {
-      console.error('Failed to fetch extended user data:', error);
+      console.error('[useAuth] Failed to fetch extended user data:', error);
+      // Return base user even if extended data fetch fails
       return baseUser;
     }
   }, [supabase]);
@@ -108,24 +122,41 @@ export function useAuth(): UseAuthReturn {
       setIsLoading(true);
       try {
         // 1. Try client-side getSession/getUser (works when cookies are readable by JS)
-        const { data: { session } } = await supabase.auth.getSession();
-        let supabaseUser = session?.user ?? null;
+        let supabaseUser: User | null = null;
+        
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          supabaseUser = session?.user ?? null;
+        } catch (err) {
+          console.warn('[useAuth] getSession failed:', err);
+        }
 
         if (!supabaseUser) {
           try {
             const { data: { user: userFromGetUser } } = await supabase.auth.getUser();
             supabaseUser = userFromGetUser ?? null;
-          } catch {
-            // Client cannot read session (e.g. HttpOnly cookies in production)
+          } catch (err) {
+            console.warn('[useAuth] getUser failed:', err);
           }
         }
 
         // 2. If still null, fetch from server (server can read HttpOnly cookies)
         if (!supabaseUser) {
           try {
-            const res = await fetch('/api/auth/session', { credentials: 'same-origin' });
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+            
+            const res = await fetch('/api/auth/session', { 
+              credentials: 'same-origin',
+              cache: 'no-store',
+              signal: controller.signal,
+            });
+            
+            clearTimeout(timeoutId);
+            
             if (res.ok) {
-              const { user: serverUser } = await res.json();
+              const data = await res.json();
+              const serverUser = data?.user;
               if (serverUser?.id) {
                 supabaseUser = {
                   id: serverUser.id,
@@ -133,23 +164,34 @@ export function useAuth(): UseAuthReturn {
                   user_metadata: serverUser.user_metadata || {},
                 } as User;
               }
+            } else {
+              console.warn('[useAuth] Session API returned non-OK:', res.status);
             }
           } catch (err) {
-            console.error('Failed to fetch session from server:', err);
+            if (err instanceof Error && err.name === 'AbortError') {
+              console.warn('[useAuth] Session API request timed out');
+            } else {
+              console.error('[useAuth] Failed to fetch session from server:', err);
+            }
           }
         }
 
         if (cancelled) return;
+        
         const extendedUser = await fetchExtendedUserData(supabaseUser);
+        
         if (cancelled) return;
+        
         setUser(extendedUser);
       } catch (error) {
+        console.error('[useAuth] Error in getInitialSession:', error);
         if (!cancelled) {
-          console.error('Failed to get session:', error);
           setUser(null);
         }
       } finally {
-        if (!cancelled) setIsLoading(false);
+        if (!cancelled) {
+          setIsLoading(false);
+        }
       }
     };
 
