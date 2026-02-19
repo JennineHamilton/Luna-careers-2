@@ -1,0 +1,6909 @@
+{
+  "tables": [
+    {
+      "table_name": "activity_logs"
+    },
+    {
+      "table_name": "assessment_attempts"
+    },
+    {
+      "table_name": "assessment_audio_files"
+    },
+    {
+      "table_name": "assessment_templates"
+    },
+    {
+      "table_name": "awarded_scholarships"
+    },
+    {
+      "table_name": "bank_transfer_submissions"
+    },
+    {
+      "table_name": "certificates"
+    },
+    {
+      "table_name": "certifications"
+    },
+    {
+      "table_name": "cognitive_attempts"
+    },
+    {
+      "table_name": "cognitive_insights"
+    },
+    {
+      "table_name": "cognitive_norms"
+    },
+    {
+      "table_name": "cognitive_questions"
+    },
+    {
+      "table_name": "cognitive_responses"
+    },
+    {
+      "table_name": "cognitive_templates"
+    },
+    {
+      "table_name": "course_modules"
+    },
+    {
+      "table_name": "course_prerequisites"
+    },
+    {
+      "table_name": "course_progress"
+    },
+    {
+      "table_name": "courses"
+    },
+    {
+      "table_name": "creators"
+    },
+    {
+      "table_name": "credit_earning_rules"
+    },
+    {
+      "table_name": "credit_transactions"
+    },
+    {
+      "table_name": "credit_wallets"
+    },
+    {
+      "table_name": "education"
+    },
+    {
+      "table_name": "email_confirmation_tokens"
+    },
+    {
+      "table_name": "enrollments"
+    },
+    {
+      "table_name": "invitation_tokens"
+    },
+    {
+      "table_name": "job_applications"
+    },
+    {
+      "table_name": "learning_outcomes"
+    },
+    {
+      "table_name": "lesson_progress"
+    },
+    {
+      "table_name": "lessons"
+    },
+    {
+      "table_name": "module_lessons"
+    },
+    {
+      "table_name": "module_prerequisites"
+    },
+    {
+      "table_name": "module_progress"
+    },
+    {
+      "table_name": "modules"
+    },
+    {
+      "table_name": "notifications"
+    },
+    {
+      "table_name": "organization_benefits"
+    },
+    {
+      "table_name": "organization_skills"
+    },
+    {
+      "table_name": "organizations"
+    },
+    {
+      "table_name": "password_reset_tokens"
+    },
+    {
+      "table_name": "payment_settings"
+    },
+    {
+      "table_name": "personality_attempts"
+    },
+    {
+      "table_name": "personality_insights"
+    },
+    {
+      "table_name": "personality_job_recommendations"
+    },
+    {
+      "table_name": "personality_questions"
+    },
+    {
+      "table_name": "personality_reports"
+    },
+    {
+      "table_name": "personality_responses"
+    },
+    {
+      "table_name": "professional_experience"
+    },
+    {
+      "table_name": "program_courses"
+    },
+    {
+      "table_name": "program_progress"
+    },
+    {
+      "table_name": "programs"
+    },
+    {
+      "table_name": "purchases"
+    },
+    {
+      "table_name": "quiz_attempts"
+    },
+    {
+      "table_name": "scholarship_applications"
+    },
+    {
+      "table_name": "scholarship_content"
+    },
+    {
+      "table_name": "scholarships"
+    },
+    {
+      "table_name": "skills"
+    },
+    {
+      "table_name": "team_invitations"
+    },
+    {
+      "table_name": "user_languages"
+    },
+    {
+      "table_name": "user_skill_badges"
+    },
+    {
+      "table_name": "user_skills"
+    },
+    {
+      "table_name": "user_verified_skills"
+    },
+    {
+      "table_name": "users"
+    },
+    {
+      "table_name": "vacancies"
+    }
+  ],
+  "columns": [
+    {
+      "table_name": "activity_logs",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "activity_logs",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "activity_logs",
+      "column_name": "organization_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "activity_logs",
+      "column_name": "activity_type",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "activity_type"
+    },
+    {
+      "table_name": "activity_logs",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "activity_logs",
+      "column_name": "metadata",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "activity_logs",
+      "column_name": "ip_address",
+      "data_type": "inet",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "inet"
+    },
+    {
+      "table_name": "activity_logs",
+      "column_name": "user_agent",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "activity_logs",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "assessment_template_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "passage_used",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "user_input",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "wpm",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "accuracy",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "time_taken",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "errors_count",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "characters_typed",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "correct_characters",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "performance_report",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "skill_level",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "skill_level_numeric",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "status",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'in_progress'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "is_submitted",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "started_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "submitted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "assessment_template_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "file_name",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "file_url",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "file_size",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "duration_seconds",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "mime_type",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'audio/mpeg'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "uploaded_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "upload_date",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "times_served",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "average_accuracy",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "transcript",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "title",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "assessment_type",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "language",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": "'en'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "duration_seconds",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": "60",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "has_audio",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "audio_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "passage_generation_prompt",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "icon",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'Keyboard'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "category",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'typing'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "display_order",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "created_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "is_system_managed",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "application_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "scholarship_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "content_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "content_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "discount_percentage",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "original_price",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "discounted_price",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "awarded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "expires_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "used",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "purchase_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "enrollment_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "enrollment_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "user_bank_name",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "user_account_holder",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "transaction_reference",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "amount_paid",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "receipt_image_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "status",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": "'pending'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "reviewed_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "reviewed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "admin_notes",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "submitted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "certificate_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "content_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "content_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "content_title",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "issue_date",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "certificate_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "verification_code",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "is_revoked",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "certificates",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "certification_title",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "issuing_organization",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "issue_date",
+      "data_type": "date",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "date"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "expiry_date",
+      "data_type": "date",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "date"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "does_not_expire",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "certificate_id",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "certificate_url_external",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "certificate_file_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "verification_status",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": "'pending'::verification_status",
+      "udt_name": "verification_status"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "verified_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "verified_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "rejection_reason",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "submitted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "uuid_generate_v4()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "template_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "status",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": "'in_progress'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "started_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "overall_raw_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "overall_percentile",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "verbal_raw_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "verbal_percentile",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "numerical_raw_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "numerical_percentile",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "abstract_raw_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "abstract_percentile",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "attention_raw_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "attention_percentile",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "total_questions",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "correct_answers",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "total_time_seconds",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "average_response_time",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_insights",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "uuid_generate_v4()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_insights",
+      "column_name": "attempt_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_insights",
+      "column_name": "insight_type",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_insights",
+      "column_name": "domain",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_insights",
+      "column_name": "title",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_insights",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_insights",
+      "column_name": "confidence_level",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'medium'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_insights",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_norms",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "uuid_generate_v4()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_norms",
+      "column_name": "domain",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_norms",
+      "column_name": "raw_score_percentage",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_norms",
+      "column_name": "percentile",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_norms",
+      "column_name": "sample_size",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "cognitive_norms",
+      "column_name": "source",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'ICAR (Condon & Revelle, 2014)'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_norms",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "uuid_generate_v4()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "template_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "domain",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "question_type",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "question_text",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "question_image_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "options",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "correct_answer",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "suggested_time_seconds",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "difficulty_level",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "icar_item_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "icar_source",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "is_practice",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "display_order",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "explanation",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "uuid_generate_v4()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "attempt_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "question_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "user_answer",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "is_correct",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "time_taken_seconds",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "is_practice",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "responded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_templates",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "uuid_generate_v4()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "cognitive_templates",
+      "column_name": "title",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_templates",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "cognitive_templates",
+      "column_name": "total_questions",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": "40",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "cognitive_templates",
+      "column_name": "time_limit_minutes",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "cognitive_templates",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "cognitive_templates",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "cognitive_templates",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "course_modules",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_modules",
+      "column_name": "course_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_modules",
+      "column_name": "module_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_modules",
+      "column_name": "sort_order",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "course_modules",
+      "column_name": "is_required",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "course_modules",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "course_prerequisites",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_prerequisites",
+      "column_name": "course_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_prerequisites",
+      "column_name": "prerequisite_course_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_prerequisites",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "course_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "status",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": "'not_started'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "completion_percentage",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "time_spent_minutes",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "started_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "certificate_issued",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "certificate_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "title",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "learning_outcomes",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "skills",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "level",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "price",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "is_free",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "intro_video_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "cover_image_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "duration_minutes",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "creator_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "requirements",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "scholarship_eligible",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "scholarship_types",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "is_published",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "name",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "bio",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "logo_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "website_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "contact_email",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "verified",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "creators",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "credit_earning_rules",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "credit_earning_rules",
+      "column_name": "content_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "credit_earning_rules",
+      "column_name": "content_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "credit_earning_rules",
+      "column_name": "credits_awarded",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "credit_earning_rules",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "credit_earning_rules",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "credit_earning_rules",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "credit_transactions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "credit_transactions",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "credit_transactions",
+      "column_name": "transaction_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "credit_transactions",
+      "column_name": "amount",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "credit_transactions",
+      "column_name": "balance_after",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "credit_transactions",
+      "column_name": "source_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "credit_transactions",
+      "column_name": "source_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "credit_transactions",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "credit_transactions",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "credit_wallets",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "credit_wallets",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "credit_wallets",
+      "column_name": "balance",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "credit_wallets",
+      "column_name": "lifetime_earned",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "credit_wallets",
+      "column_name": "lifetime_spent",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "credit_wallets",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "credit_wallets",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "education",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "education",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "education",
+      "column_name": "institution",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "education",
+      "column_name": "education_level",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "education_level"
+    },
+    {
+      "table_name": "education",
+      "column_name": "field_of_study",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "education",
+      "column_name": "start_date",
+      "data_type": "date",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "date"
+    },
+    {
+      "table_name": "education",
+      "column_name": "end_date",
+      "data_type": "date",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "date"
+    },
+    {
+      "table_name": "education",
+      "column_name": "currently_enrolled",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "education",
+      "column_name": "certificate_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "education",
+      "column_name": "verification_status",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": "'pending'::verification_status",
+      "udt_name": "verification_status"
+    },
+    {
+      "table_name": "education",
+      "column_name": "verified_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "education",
+      "column_name": "verified_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "education",
+      "column_name": "rejection_reason",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "education",
+      "column_name": "submitted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "education",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "education",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "email_confirmation_tokens",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "email_confirmation_tokens",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "email_confirmation_tokens",
+      "column_name": "token",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "email_confirmation_tokens",
+      "column_name": "expires_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "email_confirmation_tokens",
+      "column_name": "used_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "email_confirmation_tokens",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "enrollment_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "enrollment_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "purchase_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "enrolled_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "expires_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "status",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": "'active'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "completion_credits_awarded",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "credits_awarded_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "invitation_tokens",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "invitation_tokens",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "invitation_tokens",
+      "column_name": "token",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "invitation_tokens",
+      "column_name": "temporary_password",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "invitation_tokens",
+      "column_name": "expires_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "(now() + '7 days'::interval)",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "invitation_tokens",
+      "column_name": "used_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "invitation_tokens",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "vacancy_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "status",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": "'pending'::job_application_status",
+      "udt_name": "job_application_status"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "application_data",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "applied_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "reviewed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "reviewed_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "review_notes",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "consent_given",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "is_hidden",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "learning_outcomes",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "learning_outcomes",
+      "column_name": "outcome_text",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "learning_outcomes",
+      "column_name": "category",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "learning_outcomes",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "learning_outcomes",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "lesson_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "status",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": "'not_started'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "score_raw",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "score_min",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "score_max",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "passing_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "completion_percentage",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "time_spent_minutes",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "quiz_attempts",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "quiz_data",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "scorm_cmi_data",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "last_accessed",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "passed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "title",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "scorm_package_url",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "scorm_version",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "duration_minutes",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "creator_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "has_quiz",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "passing_score",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "scorm_launch_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "scorm_extraction_status",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": "'pending'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "scorm_extraction_error",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "scorm_extracted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "module_lessons",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_lessons",
+      "column_name": "module_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_lessons",
+      "column_name": "lesson_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_lessons",
+      "column_name": "sort_order",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "module_lessons",
+      "column_name": "is_required",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "module_lessons",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "module_prerequisites",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_prerequisites",
+      "column_name": "module_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_prerequisites",
+      "column_name": "prerequisite_module_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_prerequisites",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "module_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "status",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": "'not_started'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "completion_percentage",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "time_spent_minutes",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "started_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "certificate_issued",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "certificate_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "title",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "learning_outcomes",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "skills",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "level",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "price",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "is_free",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "intro_video_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "cover_image_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "duration_minutes",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "creator_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "requirements",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "scholarship_eligible",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "scholarship_types",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "is_published",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "title",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "message",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "action_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "action_label",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "metadata",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "is_read",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "read_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "notifications",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "organization_benefits",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "organization_benefits",
+      "column_name": "organization_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "organization_benefits",
+      "column_name": "benefit_name",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organization_benefits",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organization_benefits",
+      "column_name": "icon",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organization_benefits",
+      "column_name": "sort_order",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "organization_benefits",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "organization_benefits",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "email",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "first_name",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "last_name",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "avatar_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "user_role",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "user_role"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "organization_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "last_login_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "organization_name",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organization_members",
+      "column_name": "organization_slug",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organization_skills",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "organization_skills",
+      "column_name": "organization_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "organization_skills",
+      "column_name": "skill_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "organization_skills",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "name",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "slug",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "logo_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "cover_image_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "website_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "industry",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "industry_type"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "organization_size",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "organization_size"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "founded_year",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "employee_count",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "verification_status",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": "'pending'::organization_verification_status",
+      "udt_name": "organization_verification_status"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "verified_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "verified_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "tax_id",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "registration_number",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "contact_email",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "contact_phone",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "social_links",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "size",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "street_address",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "city",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "state",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "country",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "bio",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "password_reset_tokens",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "password_reset_tokens",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "password_reset_tokens",
+      "column_name": "token",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "password_reset_tokens",
+      "column_name": "expires_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "password_reset_tokens",
+      "column_name": "used_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "password_reset_tokens",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "payment_settings",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "payment_settings",
+      "column_name": "setting_key",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "payment_settings",
+      "column_name": "setting_value",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "payment_settings",
+      "column_name": "setting_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": "'text'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "payment_settings",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "payment_settings",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "payment_settings",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "payment_settings",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "assessment_template_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "status",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'in_progress'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "started_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "submitted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "extraversion_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "agreeableness_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "conscientiousness_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "emotional_stability_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "intellect_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "extraversion_percentile",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "agreeableness_percentile",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "conscientiousness_percentile",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "emotional_stability_percentile",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "intellect_percentile",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "attempt_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "insight_type",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "category",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "title",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "research_source",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "confidence_level",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "applicable_dimensions",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "percentile_trigger",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "attempt_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "job_family",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "match_strength",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "example_roles",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "rationale",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "research_source",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_questions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_questions",
+      "column_name": "question_number",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "personality_questions",
+      "column_name": "question_text",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_questions",
+      "column_name": "dimension",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_questions",
+      "column_name": "is_reversed",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "personality_questions",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_questions",
+      "column_name": "source",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'IPIP-50 (Goldberg, 1992)'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_questions",
+      "column_name": "validation_status",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'validated'::text",
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_reports",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_reports",
+      "column_name": "attempt_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_reports",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_reports",
+      "column_name": "report_type",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "personality_reports",
+      "column_name": "report_data",
+      "data_type": "jsonb",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "personality_reports",
+      "column_name": "generated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "personality_responses",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_responses",
+      "column_name": "attempt_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_responses",
+      "column_name": "question_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "personality_responses",
+      "column_name": "response_value",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "personality_responses",
+      "column_name": "response_time_ms",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "personality_responses",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "job_title",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "company",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "location_country",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "start_date",
+      "data_type": "date",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "date"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "end_date",
+      "data_type": "date",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "date"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "currently_working",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "verification_status",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": "'pending'::verification_status",
+      "udt_name": "verification_status"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "verified_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "verified_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "rejection_reason",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "submitted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "program_courses",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "program_courses",
+      "column_name": "program_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "program_courses",
+      "column_name": "course_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "program_courses",
+      "column_name": "sort_order",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "program_courses",
+      "column_name": "is_required",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "program_courses",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "program_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "status",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": "'not_started'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "completion_percentage",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "time_spent_minutes",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "started_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "certificate_issued",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "certificate_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "title",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "learning_outcomes",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "skills",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "level",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "price",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": "0",
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "is_free",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "intro_video_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "cover_image_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "duration_minutes",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "creator_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "requirements",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "scholarship_eligible",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "scholarship_types",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "is_published",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "purchasable_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "purchasable_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "original_price",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "discount_amount",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "final_price",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "payment_method",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "scholarship_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "purchased_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "expires_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "amount_credits",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "amount_cash",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": "0.00",
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "currency",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": "'USD'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "payment_status",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": "'completed'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "payment_reference",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "payment_notes",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "lesson_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "attempt_number",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "score_raw",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "score_min",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "score_max",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "score_scaled",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "passing_score",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "passed",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "completion_status",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": "'incomplete'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "success_status",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": "'unknown'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "time_spent_seconds",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "scorm_cmi_data",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "started_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "scholarship_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "content_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "content_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "status",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": "'pending'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "application_data",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "applied_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "reviewed_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "reviewed_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "review_notes",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "scholarship_content",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarship_content",
+      "column_name": "scholarship_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarship_content",
+      "column_name": "content_type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "scholarship_content",
+      "column_name": "content_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarship_content",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "name",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "type",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "discount_percentage",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "total_slots",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "slots_remaining",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "eligibility_criteria",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "valid_from",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "valid_until",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "created_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "scholarships",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "skills",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "skills",
+      "column_name": "name",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "skills",
+      "column_name": "category",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "skill_category"
+    },
+    {
+      "table_name": "skills",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "skills",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "skills",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "organization_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "invited_by",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "email",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "user_role",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "user_role"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "invitation_token",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "status",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": "'pending'::invitation_status",
+      "udt_name": "invitation_status"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "expires_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "accepted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "accepted_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "user_languages",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_languages",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_languages",
+      "column_name": "language_name",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "user_languages",
+      "column_name": "proficiency_level",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "language_proficiency"
+    },
+    {
+      "table_name": "user_languages",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "user_languages",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "assessment_template_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "best_attempt_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "best_wpm",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "best_accuracy",
+      "data_type": "numeric",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "numeric"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "badge_level",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "badge_level_numeric",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "badge_color",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "display_on_profile",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "display_order",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0",
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "earned_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "user_skills",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_skills",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_skills",
+      "column_name": "skill_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_skills",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "user_verified_skills",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_verified_skills",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_verified_skills",
+      "column_name": "skill_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_verified_skills",
+      "column_name": "source_type",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "skill_source_type"
+    },
+    {
+      "table_name": "user_verified_skills",
+      "column_name": "source_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "user_verified_skills",
+      "column_name": "verified_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "user_verified_skills",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "users",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "users",
+      "column_name": "email",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "users",
+      "column_name": "first_name",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "users",
+      "column_name": "last_name",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "users",
+      "column_name": "account_type",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": "'personal'::account_type",
+      "udt_name": "account_type"
+    },
+    {
+      "table_name": "users",
+      "column_name": "user_role",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": "'candidate'::user_role",
+      "udt_name": "user_role"
+    },
+    {
+      "table_name": "users",
+      "column_name": "organization_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "users",
+      "column_name": "current_context",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": "'personal'::user_context",
+      "udt_name": "user_context"
+    },
+    {
+      "table_name": "users",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "users",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "users",
+      "column_name": "avatar_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "users",
+      "column_name": "phone",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "users",
+      "column_name": "bio",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "users",
+      "column_name": "location",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "users",
+      "column_name": "linkedin_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "users",
+      "column_name": "portfolio_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "users",
+      "column_name": "resume_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "users",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "users",
+      "column_name": "last_login_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "users",
+      "column_name": "email_verified",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "users",
+      "column_name": "phone_verified",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "users",
+      "column_name": "invitation_sent_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "users",
+      "column_name": "invitation_accepted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "users",
+      "column_name": "invited_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "users",
+      "column_name": "onboarding_completed",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "users",
+      "column_name": "temporary_password_hash",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "users",
+      "column_name": "temp_password_expires_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "users",
+      "column_name": "is_suspended",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "users",
+      "column_name": "suspension_reason",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "users",
+      "column_name": "suspended_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "users",
+      "column_name": "suspended_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "users",
+      "column_name": "city",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "users",
+      "column_name": "state",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "users",
+      "column_name": "country",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "users",
+      "column_name": "intro_video_url",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "users",
+      "column_name": "profession",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()",
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "organization_id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "title",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "requirements",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "responsibilities",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "text"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "location_country",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "location_state",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "location_city",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "is_remote",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "employment_type",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "employment_type"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "experience_level",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "NO",
+      "column_default": null,
+      "udt_name": "experience_level"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "salary_range_min",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "salary_range_max",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "int4"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "salary_currency",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "column_default": "'USD'::character varying",
+      "udt_name": "varchar"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "required_skills",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "preferred_skills",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "benefits",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'[]'::jsonb",
+      "udt_name": "jsonb"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "application_deadline",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "is_active",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "true",
+      "udt_name": "bool"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()",
+      "udt_name": "timestamptz"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "created_by",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "uuid"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "work_location",
+      "data_type": "USER-DEFINED",
+      "is_nullable": "YES",
+      "column_default": null,
+      "udt_name": "work_location_type"
+    }
+  ],
+  "enums": [
+    {
+      "enum_name": "account_type",
+      "enum_values": "{personal,organization,platformAdmin,hybrid}"
+    },
+    {
+      "enum_name": "activity_type",
+      "enum_values": "{user_login,user_logout,user_created,user_updated,user_deleted,organization_created,organization_updated,organization_verified,organization_suspended,team_member_invited,team_member_joined,team_member_removed,role_changed,context_switched,settings_updated,password_changed,email_changed}"
+    },
+    {
+      "enum_name": "education_level",
+      "enum_values": "{high_school,associate,bachelor,master,phd}"
+    },
+    {
+      "enum_name": "employment_type",
+      "enum_values": "{full-time,part-time,contract,internship,temporary}"
+    },
+    {
+      "enum_name": "experience_level",
+      "enum_values": "{entry,mid,senior,lead,executive}"
+    },
+    {
+      "enum_name": "industry_type",
+      "enum_values": "{technology,healthcare,finance,education,retail,manufacturing,hospitality,construction,transportation,energy,telecommunications,media,real_estate,legal,consulting,nonprofit,government,other}"
+    },
+    {
+      "enum_name": "invitation_status",
+      "enum_values": "{pending,accepted,declined,expired,cancelled}"
+    },
+    {
+      "enum_name": "job_application_status",
+      "enum_values": "{pending,reviewing,shortlisted,rejected,accepted,withdrawn}"
+    },
+    {
+      "enum_name": "language_proficiency",
+      "enum_values": "{native,fluent,advanced,intermediate,basic}"
+    },
+    {
+      "enum_name": "organization_size",
+      "enum_values": "{startup,small,medium,large,enterprise}"
+    },
+    {
+      "enum_name": "organization_verification_status",
+      "enum_values": "{pending,verified,rejected,suspended}"
+    },
+    {
+      "enum_name": "skill_category",
+      "enum_values": "{technical,soft_skill,industry_specific,business,creative,data_analytics,leadership,communication,digital_literacy}"
+    },
+    {
+      "enum_name": "skill_source_type",
+      "enum_values": "{learning_completion,assessment_passed}"
+    },
+    {
+      "enum_name": "user_context",
+      "enum_values": "{personal,organization}"
+    },
+    {
+      "enum_name": "user_role",
+      "enum_values": "{candidate,premium_member,organization_member,recruiter,hr_manager,hiring_manager,org_admin,super_admin,moderator,support}"
+    },
+    {
+      "enum_name": "verification_status",
+      "enum_values": "{pending,verified,rejected}"
+    },
+    {
+      "enum_name": "work_location_type",
+      "enum_values": "{remote,in_office,hybrid}"
+    }
+  ],
+  "relationships": [
+    {
+      "table_name": "activity_logs",
+      "column_name": "organization_id",
+      "foreign_table_name": "organizations",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "activity_logs",
+      "column_name": "user_id",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "assessment_template_id",
+      "foreign_table_name": "assessment_templates",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "assessment_attempts",
+      "column_name": "user_id",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "assessment_template_id",
+      "foreign_table_name": "assessment_templates",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "assessment_audio_files",
+      "column_name": "uploaded_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "assessment_templates",
+      "column_name": "created_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "application_id",
+      "foreign_table_name": "scholarship_applications",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "awarded_scholarships",
+      "column_name": "scholarship_id",
+      "foreign_table_name": "scholarships",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "purchase_id",
+      "foreign_table_name": "purchases",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "reviewed_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "bank_transfer_submissions",
+      "column_name": "user_id",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "certifications",
+      "column_name": "verified_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "cognitive_attempts",
+      "column_name": "template_id",
+      "foreign_table_name": "cognitive_templates",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "cognitive_insights",
+      "column_name": "attempt_id",
+      "foreign_table_name": "cognitive_attempts",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "cognitive_questions",
+      "column_name": "template_id",
+      "foreign_table_name": "cognitive_templates",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "attempt_id",
+      "foreign_table_name": "cognitive_attempts",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "cognitive_responses",
+      "column_name": "question_id",
+      "foreign_table_name": "cognitive_questions",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "course_modules",
+      "column_name": "course_id",
+      "foreign_table_name": "courses",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "course_modules",
+      "column_name": "module_id",
+      "foreign_table_name": "modules",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "course_prerequisites",
+      "column_name": "course_id",
+      "foreign_table_name": "courses",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "course_prerequisites",
+      "column_name": "prerequisite_course_id",
+      "foreign_table_name": "courses",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "course_progress",
+      "column_name": "course_id",
+      "foreign_table_name": "courses",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "courses",
+      "column_name": "creator_id",
+      "foreign_table_name": "creators",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "education",
+      "column_name": "verified_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "enrollments",
+      "column_name": "purchase_id",
+      "foreign_table_name": "purchases",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "invitation_tokens",
+      "column_name": "user_id",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "job_applications",
+      "column_name": "vacancy_id",
+      "foreign_table_name": "vacancies",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "lesson_progress",
+      "column_name": "lesson_id",
+      "foreign_table_name": "lessons",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "lessons",
+      "column_name": "creator_id",
+      "foreign_table_name": "creators",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "module_lessons",
+      "column_name": "lesson_id",
+      "foreign_table_name": "lessons",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "module_lessons",
+      "column_name": "module_id",
+      "foreign_table_name": "modules",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "module_prerequisites",
+      "column_name": "module_id",
+      "foreign_table_name": "modules",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "module_prerequisites",
+      "column_name": "prerequisite_module_id",
+      "foreign_table_name": "modules",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "module_progress",
+      "column_name": "module_id",
+      "foreign_table_name": "modules",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "modules",
+      "column_name": "creator_id",
+      "foreign_table_name": "creators",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "organization_benefits",
+      "column_name": "organization_id",
+      "foreign_table_name": "organizations",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "organization_skills",
+      "column_name": "organization_id",
+      "foreign_table_name": "organizations",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "organization_skills",
+      "column_name": "skill_id",
+      "foreign_table_name": "skills",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "organizations",
+      "column_name": "verified_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "personality_attempts",
+      "column_name": "assessment_template_id",
+      "foreign_table_name": "assessment_templates",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "personality_insights",
+      "column_name": "attempt_id",
+      "foreign_table_name": "personality_attempts",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "personality_job_recommendations",
+      "column_name": "attempt_id",
+      "foreign_table_name": "personality_attempts",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "personality_reports",
+      "column_name": "attempt_id",
+      "foreign_table_name": "personality_attempts",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "personality_responses",
+      "column_name": "attempt_id",
+      "foreign_table_name": "personality_attempts",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "personality_responses",
+      "column_name": "question_id",
+      "foreign_table_name": "personality_questions",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "professional_experience",
+      "column_name": "verified_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "program_courses",
+      "column_name": "course_id",
+      "foreign_table_name": "courses",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "program_courses",
+      "column_name": "program_id",
+      "foreign_table_name": "programs",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "program_progress",
+      "column_name": "program_id",
+      "foreign_table_name": "programs",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "programs",
+      "column_name": "creator_id",
+      "foreign_table_name": "creators",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "purchases",
+      "column_name": "scholarship_id",
+      "foreign_table_name": "awarded_scholarships",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "quiz_attempts",
+      "column_name": "lesson_id",
+      "foreign_table_name": "lessons",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "scholarship_applications",
+      "column_name": "scholarship_id",
+      "foreign_table_name": "scholarships",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "scholarship_content",
+      "column_name": "scholarship_id",
+      "foreign_table_name": "scholarships",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "accepted_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "invited_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "team_invitations",
+      "column_name": "organization_id",
+      "foreign_table_name": "organizations",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "assessment_template_id",
+      "foreign_table_name": "assessment_templates",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "best_attempt_id",
+      "foreign_table_name": "assessment_attempts",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "user_skill_badges",
+      "column_name": "user_id",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "user_skills",
+      "column_name": "skill_id",
+      "foreign_table_name": "skills",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "user_verified_skills",
+      "column_name": "skill_id",
+      "foreign_table_name": "skills",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "users",
+      "column_name": "invited_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "users",
+      "column_name": "organization_id",
+      "foreign_table_name": "organizations",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "users",
+      "column_name": "suspended_by",
+      "foreign_table_name": "users",
+      "foreign_column_name": "id"
+    },
+    {
+      "table_name": "vacancies",
+      "column_name": "organization_id",
+      "foreign_table_name": "organizations",
+      "foreign_column_name": "id"
+    }
+  ],
+  "views": [
+    {
+      "table_name": "organization_members"
+    }
+  ],
+  "functions": [
+    {
+      "function_name": "auto_enroll_course_modules",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "auto_enroll_program_courses",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "award_credits",
+      "arguments": "p_user_id uuid, p_amount numeric, p_source_type character varying, p_source_id uuid, p_description text",
+      "return_type": "void"
+    },
+    {
+      "function_name": "calculate_course_progress",
+      "arguments": "p_user_id uuid, p_course_id uuid",
+      "return_type": "jsonb"
+    },
+    {
+      "function_name": "calculate_module_progress",
+      "arguments": "p_user_id uuid, p_module_id uuid",
+      "return_type": "jsonb"
+    },
+    {
+      "function_name": "calculate_program_progress",
+      "arguments": "p_user_id uuid, p_program_id uuid",
+      "return_type": "jsonb"
+    },
+    {
+      "function_name": "calculate_skill_level",
+      "arguments": "wpm integer, accuracy numeric",
+      "return_type": "TABLE(level text, level_numeric integer, color text)"
+    },
+    {
+      "function_name": "cleanup_expired_confirmation_tokens",
+      "arguments": "",
+      "return_type": "void"
+    },
+    {
+      "function_name": "compute_course_duration",
+      "arguments": "p_course_id uuid",
+      "return_type": "integer"
+    },
+    {
+      "function_name": "compute_module_duration",
+      "arguments": "p_module_id uuid",
+      "return_type": "integer"
+    },
+    {
+      "function_name": "compute_program_duration",
+      "arguments": "p_program_id uuid",
+      "return_type": "integer"
+    },
+    {
+      "function_name": "create_credit_wallet_for_new_user",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "create_team_invitation",
+      "arguments": "p_organization_id uuid, p_invited_by uuid, p_email character varying, p_user_role user_role, p_expires_in_days integer DEFAULT 7",
+      "return_type": "uuid"
+    },
+    {
+      "function_name": "custom_access_token_hook",
+      "arguments": "event jsonb",
+      "return_type": "jsonb"
+    },
+    {
+      "function_name": "generate_invitation_token",
+      "arguments": "p_user_id uuid, p_temporary_password text",
+      "return_type": "TABLE(token text, expires_at timestamp with time zone)"
+    },
+    {
+      "function_name": "generate_organization_slug",
+      "arguments": "org_name text",
+      "return_type": "text"
+    },
+    {
+      "function_name": "get_best_quiz_attempt",
+      "arguments": "p_user_id uuid, p_lesson_id uuid",
+      "return_type": "quiz_attempts"
+    },
+    {
+      "function_name": "get_latest_quiz_attempt",
+      "arguments": "p_user_id uuid, p_lesson_id uuid",
+      "return_type": "quiz_attempts"
+    },
+    {
+      "function_name": "get_next_attempt_number",
+      "arguments": "p_user_id uuid, p_assessment_id uuid",
+      "return_type": "integer"
+    },
+    {
+      "function_name": "get_official_score",
+      "arguments": "p_user_id uuid, p_assessment_id uuid",
+      "return_type": "TABLE(attempt_id uuid, score numeric, passed boolean, completed_at timestamp with time zone)"
+    },
+    {
+      "function_name": "get_user_account_type",
+      "arguments": "",
+      "return_type": "text"
+    },
+    {
+      "function_name": "get_user_organization_id",
+      "arguments": "",
+      "return_type": "uuid"
+    },
+    {
+      "function_name": "get_user_role",
+      "arguments": "",
+      "return_type": "text"
+    },
+    {
+      "function_name": "handle_new_user",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "increment_content_usage",
+      "arguments": "p_content_hash character varying",
+      "return_type": "void"
+    },
+    {
+      "function_name": "is_platform_admin",
+      "arguments": "",
+      "return_type": "boolean"
+    },
+    {
+      "function_name": "log_activity",
+      "arguments": "p_user_id uuid, p_organization_id uuid, p_activity_type activity_type, p_description text DEFAULT NULL::text, p_metadata jsonb DEFAULT '{}'::jsonb, p_ip_address inet DEFAULT NULL::inet, p_user_agent text DEFAULT NULL::text",
+      "return_type": "uuid"
+    },
+    {
+      "function_name": "mark_invitation_token_used",
+      "arguments": "p_token text",
+      "return_type": "boolean"
+    },
+    {
+      "function_name": "preserve_vacancy_details_before_delete",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "set_organization_slug",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "spend_credits",
+      "arguments": "p_user_id uuid, p_amount numeric, p_source_type character varying, p_source_id uuid, p_description text",
+      "return_type": "boolean"
+    },
+    {
+      "function_name": "sync_user_metadata",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_cognitive_updated_at",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_course_duration",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_course_progress_on_module_change",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_job_applications_updated_at",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_module_duration",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_module_progress_on_lesson_change",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_program_duration",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_program_progress_on_course_change",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_scholarship_applications_updated_at",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_updated_at_column",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_user_assessment_history_updated_at",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "update_vacancies_updated_at",
+      "arguments": "",
+      "return_type": "trigger"
+    },
+    {
+      "function_name": "validate_invitation_token",
+      "arguments": "p_token text, p_temporary_password text",
+      "return_type": "TABLE(valid boolean, user_id uuid, email character varying)"
+    }
+  ]
+}

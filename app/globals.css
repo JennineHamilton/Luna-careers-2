@@ -1,0 +1,266 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: 5px;
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Luna Brand Colors */
+  --color-luna-navy: #00185F;
+  --color-luna-blue: #1449E8;
+  --color-luna-yellow: #FFDF2B;
+
+  /* Luna Neutrals */
+  --color-luna-gray-50: #F8F9FB;
+  --color-luna-gray-100: #F1F3F6;
+  --color-luna-gray-200: #E4E7EC;
+  --color-luna-gray-300: #D0D5DD;
+  --color-luna-gray-400: #98A2B3;
+  --color-luna-gray-450: #AFB3BF;
+  --color-luna-gray-500: #667085;
+  --color-luna-gray-600: #5A637B;
+  --color-luna-gray-700: #344054;
+  --color-luna-gray-800: #1D2939;
+  --color-luna-gray-900: #0C141D;
+
+  /* Luna Semantic */
+  --color-luna-success: #10B981;
+  --color-luna-warning: #F59E0B;
+  --color-luna-error: #EF4444;
+  --color-luna-info: #3B82F6;
+
+  /* Luna Portal Accents */
+  --color-luna-personal: #1449E8;
+  --color-luna-organization: #7C3AED;
+  --color-luna-admin: #6B7280;
+
+  /* Luna Backgrounds */
+  --color-luna-bg-primary: #FFFFFF;
+  --color-luna-bg-secondary: #F8F9FB;
+  --color-luna-bg-tertiary: rgba(0, 24, 95, 0.04);
+
+  /* Luna Borders */
+  --color-luna-border-light: rgba(0, 24, 95, 0.04);
+  --color-luna-border-default: #E4E7EC;
+  --color-luna-border-strong: #00185F;
+
+  /* Luna Shadows */
+  --shadow-luna-sm: 0px 2px 12px 1px rgba(0, 0, 0, 0.05);
+  --shadow-luna-md: 0px 4px 16px rgba(0, 0, 0, 0.1);
+
+  /* Luna Gradients */
+  --gradient-luna-personal: linear-gradient(138.18deg, #1449E8 7.36%, #0F3AB8 97.64%);
+  --gradient-luna-org-orange: linear-gradient(313.45deg, #EA580C 7.43%, #F59E0B 100%);
+  --gradient-luna-org-green: linear-gradient(313.45deg, #059669 7.43%, #22C55E 100%);
+  --gradient-luna-org-purple: linear-gradient(134.49deg, #6366F1 0%, #9333EA 94.17%);
+
+  /* Luna Backdrop */
+  --backdrop-blur-luna-glass: 10px;
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+    font-feature-settings: 'liga' 1, 'calt' 1, 'cv02', 'cv03', 'cv04', 'cv11';
+    font-optical-sizing: auto;
+    line-height: 1.5;
+  }
+
+  /* ── Typography Scale: letter-spacing & line-height per size ── */
+  /* Inter is optimally spaced at body sizes (14-16px) — only tighten headings */
+
+  /* Display / Hero — very tight */
+  h1, .text-4xl, .text-5xl, .text-6xl {
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  /* Page headings */
+  h2, .text-3xl {
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  /* Section headings */
+  h3, .text-2xl {
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  /* Card titles / sub-headings */
+  h4, .text-xl {
+    letter-spacing: -0.017em;
+    line-height: 1.25;
+  }
+
+  /* Large body / lead text */
+  h5, h6, .text-lg {
+    letter-spacing: -0.014em;
+    line-height: 1.35;
+  }
+
+  /* Body text (14-16px) — Inter's design target, no tracking needed */
+  .text-sm, .text-base {
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  /* Small / labels / captions (12-13px) */
+  .text-xs {
+    letter-spacing: 0;
+    line-height: 1.4;
+  }
+}
+
+/* Luna Focus Ring Utilities */
+@layer utilities {
+  .luna-focus-ring {
+    @apply focus-visible:ring-2 focus-visible:ring-luna-blue focus-visible:ring-offset-2 focus-visible:outline-none;
+  }
+
+  /* Ensure font variables are available */
+  .font-inter {
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Luna Dialog/Modal Styles */
+@layer components {
+  /* All form fields in dialogs should be 14px */
+  [data-slot="luna-dialog-body"] input,
+  [data-slot="luna-dialog-body"] textarea,
+  [data-slot="luna-dialog-body"] select,
+  [data-slot="luna-dialog-body"] .PhoneInputInput,
+  [data-slot="luna-dialog-body"] .luna-react-select__control {
+    @apply text-sm;
+  }
+
+  /* Label text in dialogs should be 14px */
+  [data-slot="luna-dialog-body"] label {
+    @apply text-sm;
+  }
+
+  /* Hide scrollbar utility */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+}
