@@ -382,6 +382,18 @@ export const quizAttemptCreateSchema = z.object({
 // Admin Vacancy Schemas
 // ============================================================
 
+const prerequisiteAssessmentSchema = z.object({
+  id: z.string(),
+  type: z.string().optional(),
+  title: z.string().optional(),
+  category: z.string().optional(),
+});
+const prerequisiteLearningContentSchema = z.object({
+  id: z.string(),
+  type: z.enum(['module', 'course', 'program']),
+  title: z.string().optional(),
+});
+
 export const vacancyCreateSchema = z.object({
   organization_id: uuidSchema,
   title: z.string().min(1, 'Title is required').max(255),
@@ -399,14 +411,19 @@ export const vacancyCreateSchema = z.object({
   salary_currency: z.string().max(10).default('USD'),
   required_skills: z.array(z.string()).optional(),
   preferred_skills: z.array(z.string()).optional(),
+  application_deadline: z.string().optional().nullable(),
+  prerequisite_assessments: z.array(prerequisiteAssessmentSchema).optional(),
+  prerequisite_learning_content: z.array(prerequisiteLearningContentSchema).optional(),
 });
 
 export const vacancyUpdateSchema = z.object({
   vacancy_id: uuidSchema,
   title: z.string().min(1, 'Title is required').max(255),
+  description: z.string().max(5000).optional().nullable(),
   responsibilities: z.string().max(5000).optional().nullable(),
   requirements: z.string().max(5000).optional().nullable(),
   employment_type: z.enum(['full-time', 'part-time', 'contract', 'internship', 'temporary']),
+  experience_level: z.enum(['entry', 'mid', 'senior', 'lead', 'executive']).optional(),
   is_remote: z.boolean().default(false),
   location_city: z.string().max(100).optional().nullable(),
   location_state: z.string().max(100).optional().nullable(),
@@ -415,6 +432,9 @@ export const vacancyUpdateSchema = z.object({
   salary_range_max: z.number().nonnegative().optional().nullable(),
   required_skills: z.array(z.string()).optional(),
   preferred_skills: z.array(z.string()).optional(),
+  application_deadline: z.string().optional().nullable(),
+  prerequisite_assessments: z.array(prerequisiteAssessmentSchema).optional(),
+  prerequisite_learning_content: z.array(prerequisiteLearningContentSchema).optional(),
 });
 
 // ============================================================

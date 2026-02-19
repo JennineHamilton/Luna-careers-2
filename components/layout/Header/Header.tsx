@@ -12,9 +12,18 @@ interface HeaderProps {
   pageTitle?: string;
   /** Show points tracker (default: true) */
   showPointsTracker?: boolean;
+  /** Notification scope for dropdown: personal (default) or organization */
+  notificationScope?: 'personal' | 'organization';
+  /** Organization slug when notificationScope is organization */
+  organizationSlug?: string;
 }
 
-export default function Header({ pageTitle, showPointsTracker = true }: HeaderProps) {
+export default function Header({
+  pageTitle,
+  showPointsTracker = true,
+  notificationScope = 'personal',
+  organizationSlug,
+}: HeaderProps) {
   const { isSidebarCollapsed, toggleSidebar, isMobile, toggleMobileMenu } = useLayout();
 
   return (
@@ -59,7 +68,10 @@ export default function Header({ pageTitle, showPointsTracker = true }: HeaderPr
         {showPointsTracker && <PointsTracker />}
 
         {/* Notifications */}
-        <NotificationsMenu />
+        <NotificationsMenu
+          scope={notificationScope}
+          organizationSlug={organizationSlug}
+        />
 
         {/* User Menu */}
         <UserMenu />

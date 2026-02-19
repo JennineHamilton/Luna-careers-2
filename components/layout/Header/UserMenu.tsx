@@ -37,15 +37,20 @@ export default function UserMenu() {
   // Determine which avatar to show
   const avatarUrl = currentContext === 'personal' ? user?.avatarUrl : user?.organizationLogoUrl;
 
+  // While auth is loading, show a neutral placeholder so we don't flash "U" before user is known
+  const showAvatarPlaceholder = isLoading;
+
   return (
     <LunaDropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <LunaDropdownMenuTrigger asChild>
         <button
           className="flex items-center justify-center w-9 h-9 rounded-md font-semibold text-sm text-white hover:opacity-90 transition-opacity overflow-hidden"
-          style={avatarUrl ? {} : gradientToStyle(currentGradient)}
+          style={avatarUrl && !showAvatarPlaceholder ? {} : gradientToStyle(currentGradient)}
           aria-label="User menu"
         >
-          {avatarUrl ? (
+          {showAvatarPlaceholder ? (
+            <span className="w-4 h-4 rounded-full bg-white/30 animate-pulse" aria-hidden />
+          ) : avatarUrl ? (
             <Image
               src={avatarUrl}
               alt={displayName}
@@ -65,10 +70,12 @@ export default function UserMenu() {
         {/* User Info Card */}
         <div className="flex items-center gap-2 rounded-md p-[5px] bg-luna-gray-50 mb-3">
           <div
-            className="w-9 h-9 flex items-center justify-center font-semibold rounded-md text-white text-sm flex-shrink-0 overflow-hidden"
-            style={avatarUrl ? {} : gradientToStyle(currentGradient)}
+            className="w-9 h-9 flex items-center justify-center font-semibold rounded-md text-white text-sm shrink-0 overflow-hidden"
+            style={avatarUrl && !showAvatarPlaceholder ? {} : gradientToStyle(currentGradient)}
           >
-            {avatarUrl ? (
+            {showAvatarPlaceholder ? (
+              <span className="w-5 h-5 rounded-full bg-white/30 animate-pulse" aria-hidden />
+            ) : avatarUrl ? (
               <Image
                 src={avatarUrl}
                 alt={displayName}

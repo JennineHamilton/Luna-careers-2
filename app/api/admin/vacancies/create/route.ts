@@ -39,6 +39,9 @@ export async function POST(request: NextRequest) {
       salary_currency,
       required_skills,
       preferred_skills,
+      application_deadline,
+      prerequisite_assessments,
+      prerequisite_learning_content,
     } = validation.data;
 
     // Use admin client to bypass RLS
@@ -64,6 +67,9 @@ export async function POST(request: NextRequest) {
         salary_currency: salary_currency || 'USD',
         required_skills: required_skills || [],
         preferred_skills: preferred_skills || [],
+        application_deadline: application_deadline || null,
+        prerequisite_assessments: prerequisite_assessments ?? [],
+        prerequisite_learning_content: prerequisite_learning_content ?? [],
         benefits: [], // Admin doesn't set benefits - comes from org profile
         is_active: true,
         created_by: user.id,

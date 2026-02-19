@@ -25,14 +25,24 @@ import { Country, State, City } from 'country-state-city';
 type EmploymentType = Database['public']['Enums']['employment_type'];
 type ExperienceLevel = Database['public']['Enums']['experience_level'];
 
+interface OrganizationOption {
+  id: string;
+  name: string;
+}
+
 interface CreateVacancyModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  organizationId: string;
+  /** When provided (org portal), vacancy is created for this org. When undefined and useAdminApi (admin portal), user selects org in first step. */
+  organizationId?: string;
+  /** When true, submit via admin API (platform admin). Requires organizationId or user to select org in first step. */
+  useAdminApi?: boolean;
+  /** When useAdminApi and no organizationId, list of organizations to choose from (e.g. from admin page). */
+  organizations?: OrganizationOption[];
   onSuccess?: () => void;
 }
 
-type Step = 'basic' | 'details' | 'compensation' | 'prerequisites';
+type Step = 'organization' | 'basic' | 'details' | 'compensation' | 'prerequisites';
 
 interface Skill {
   id: string;
@@ -52,15 +62,32 @@ interface LearningContent {
   type: 'module' | 'course' | 'program';
 }
 
+const needsOrganizationStep = (organizationId: string | undefined, useAdminApi: boolean) =>
+  useAdminApi && !organizationId;
+
 export function CreateVacancyModal({
   open,
   onOpenChange,
-  organizationId,
+  organizationId: organizationIdProp,
+  useAdminApi = false,
+  organizations: organizationsProp = [],
   onSuccess,
 }: CreateVacancyModalProps) {
-  const [step, setStep] = useState<Step>('basic');
+  const organizationId = organizationIdProp ?? undefined;
+  const showOrgStep = needsOrganizationStep(organizationId, useAdminApi);
+  const [step, setStep] = useState<Step>(showOrgStep ? 'organization' : 'basic');
+
+  useEffect(() => {
+    if (open) {
+      setStep(showOrgStep ? 'organization' : 'basic');
+    }
+  }, [open, showOrgStep]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Admin: selected org when no organizationId passed
+  const [selectedOrganizationId, setSelectedOrganizationId] = useState('');
+  const organizations = organizationsProp;
 
   // Data for dropdowns
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -233,10 +260,23 @@ export function CreateVacancyModal({
     setLearningContent(allLearningContent);
   };
 
+  const effectiveOrganizationId = organizationId || selectedOrganizationId;
+
   const handleNext = () => {
-    if (step === 'basic') {
+    if (step === 'organization') {
+      if (!selectedOrganizationId) {
+        setError('Please select an organization');
+        return;
+      }
+      setError('');
+      setStep('basic');
+    } else if (step === 'basic') {
       if (!title.trim() || !description.trim() || !employmentType) {
         setError('Please fill in all required fields');
+        return;
+      }
+      if (useAdminApi && !effectiveOrganizationId) {
+        setError('Please select an organization');
         return;
       }
       setError('');
@@ -257,7 +297,9 @@ export function CreateVacancyModal({
 
   const handlePrevious = () => {
     setError('');
-    if (step === 'details') {
+    if (step === 'basic') {
+      setStep(showOrgStep ? 'organization' : 'basic');
+    } else if (step === 'details') {
       setStep('basic');
     } else if (step === 'compensation') {
       setStep('details');
@@ -271,45 +313,82 @@ export function CreateVacancyModal({
     setError('');
     setLoading(true);
 
+    const countryName = country[0] ? Country.getCountryByCode(country[0])?.name || null : null;
+    const stateName = country[0] && state[0] ? State.getStateByCodeAndCountry(state[0], country[0])?.name || null : null;
+    const cityName = city[0] || null;
+
+    const prerequisiteAssessmentsData = prerequisiteAssessments.map(id => {
+      const assessment = assessments.find(a => a.id === id);
+      return assessment ? {
+        id: assessment.id,
+        type: assessment.type,
+        title: assessment.title,
+        category: assessment.category,
+      } : null;
+    }).filter(Boolean);
+
+    const prerequisiteLearningContentData = prerequisiteLearningContent.map(id => {
+      const content = learningContent.find(c => c.id === id);
+      return content ? {
+        id: content.id,
+        type: content.type,
+        title: content.title,
+      } : null;
+    }).filter(Boolean);
+
     try {
+      if (useAdminApi) {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          setError('You must be logged in');
+          setLoading(false);
+          return;
+        }
+        const response = await fetch('/api/admin/vacancies/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+          body: JSON.stringify({
+            organization_id: effectiveOrganizationId,
+            title: title.trim(),
+            description: description.trim(),
+            responsibilities: responsibilities.trim() || null,
+            requirements: requirements.trim() || null,
+            employment_type: employmentType,
+            experience_level: experienceLevel,
+            is_remote: workLocation === 'remote',
+            location_city: workLocation === 'remote' ? null : cityName,
+            location_state: workLocation === 'remote' ? null : stateName,
+            location_country: workLocation === 'remote' ? null : countryName,
+            salary_range_min: salaryMin ? parseInt(salaryMin) : null,
+            salary_range_max: salaryMax ? parseInt(salaryMax) : null,
+            salary_currency: 'USD',
+            required_skills: requiredSkills,
+            preferred_skills: preferredSkills,
+            application_deadline: deadline ? deadline.toISOString() : null,
+            prerequisite_assessments: prerequisiteAssessmentsData,
+            prerequisite_learning_content: prerequisiteLearningContentData,
+          }),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'Failed to create vacancy');
+        onSuccess?.();
+        handleClose();
+        return;
+      }
+
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
-
       if (!session) {
         setError('You must be logged in');
         setLoading(false);
         return;
       }
 
-      // Get location names from ISO codes
-      const countryName = country[0] ? Country.getCountryByCode(country[0])?.name || null : null;
-      const stateName = country[0] && state[0] ? State.getStateByCodeAndCountry(state[0], country[0])?.name || null : null;
-      const cityName = city[0] || null;
-
-      // Build prerequisite arrays with full details
-      const prerequisiteAssessmentsData = prerequisiteAssessments.map(id => {
-        const assessment = assessments.find(a => a.id === id);
-        return assessment ? {
-          id: assessment.id,
-          type: assessment.type,
-          title: assessment.title,
-          category: assessment.category,
-        } : null;
-      }).filter(Boolean);
-
-      const prerequisiteLearningContentData = prerequisiteLearningContent.map(id => {
-        const content = learningContent.find(c => c.id === id);
-        return content ? {
-          id: content.id,
-          type: content.type,
-          title: content.title,
-        } : null;
-      }).filter(Boolean);
-
       const { error: insertError } = await supabase
         .from('vacancies')
         .insert({
-          organization_id: organizationId,
+          organization_id: effectiveOrganizationId,
           title: title.trim(),
           description: description.trim(),
           responsibilities: responsibilities.trim() || null,
@@ -332,10 +411,7 @@ export function CreateVacancyModal({
           created_by: session.user.id,
         });
 
-      if (insertError) {
-        throw insertError;
-      }
-
+      if (insertError) throw insertError;
       onSuccess?.();
       handleClose();
     } catch (err) {
@@ -346,7 +422,8 @@ export function CreateVacancyModal({
   };
 
   const handleClose = () => {
-    setStep('basic');
+    setStep(showOrgStep ? 'organization' : 'basic');
+    setSelectedOrganizationId('');
     setTitle('');
     setDescription('');
     setExperienceLevel('mid');
@@ -478,6 +555,23 @@ export function CreateVacancyModal({
             <Alert variant="destructive" className="mb-4">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
+          )}
+
+          {step === 'organization' && (
+            <form onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="space-y-4">
+              <LunaSearchableSelect
+                label="Organization"
+                required
+                placeholder="Select organization"
+                searchPlaceholder="Search organizations..."
+                options={organizations.map(o => ({ value: o.id, label: o.name }))}
+                value={selectedOrganizationId}
+                onValueChange={setSelectedOrganizationId}
+              />
+              <p className="text-sm text-luna-gray-600">
+                Select the organization that will own this vacancy. You can then fill in the job details in the next steps.
+              </p>
+            </form>
           )}
 
           {step === 'basic' && (
@@ -708,7 +802,7 @@ export function CreateVacancyModal({
         <LunaDialogFooter>
           <div className="flex justify-between w-full">
             <div>
-              {step !== 'basic' && (
+              {step !== 'basic' && step !== 'organization' && (
                 <LunaButton
                   type="button"
                   variant="outline"

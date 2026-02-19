@@ -17,6 +17,9 @@ interface MainLayoutProps {
   showContextSwitcher?: boolean;
   /** Show points tracker in header (default: true) */
   showPointsTracker?: boolean;
+  /** When in organization portal: scope and slug so header shows only org notifications */
+  notificationScope?: 'personal' | 'organization';
+  organizationSlug?: string;
 }
 
 /**
@@ -41,6 +44,8 @@ export default function MainLayout({
   navSections,
   showContextSwitcher = true,
   showPointsTracker = true,
+  notificationScope = 'personal',
+  organizationSlug,
 }: MainLayoutProps) {
   return (
     <LayoutProvider>
@@ -49,7 +54,12 @@ export default function MainLayout({
         <Sidebar navSections={navSections} showContextSwitcher={showContextSwitcher} />
 
         {/* Header - Fixed position */}
-        <Header pageTitle={pageTitle} showPointsTracker={showPointsTracker} />
+        <Header
+          pageTitle={pageTitle}
+          showPointsTracker={showPointsTracker}
+          notificationScope={notificationScope}
+          organizationSlug={organizationSlug}
+        />
 
         {/* Page Content - With proper margins for fixed sidebar/header */}
         <MainContent>{children}</MainContent>

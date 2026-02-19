@@ -84,18 +84,14 @@ export function ViewProfileModal({
 
   const handleStatusUpdate = async (newStatus: 'shortlisted' | 'rejected') => {
     setIsUpdating(true);
-    const supabase = createClient();
-
     try {
-      const { error } = await supabase
-        .from('job_applications')
-        .update({
-          status: newStatus,
-          reviewed_at: new Date().toISOString(),
-        })
-        .eq('id', applicationId);
-
-      if (error) throw error;
+      const response = await fetch(`/api/org/applications/${applicationId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Failed to update status');
 
       onOpenChange(false);
       if (onStatusUpdate) {

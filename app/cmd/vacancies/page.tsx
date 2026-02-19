@@ -15,6 +15,7 @@ export type VacancyData = {
   location_state: string | null;
   location_city: string | null;
   is_remote: boolean;
+  work_location: string | null;
   employment_type: string;
   experience_level: string;
   salary_range_min: number | null;
@@ -24,6 +25,8 @@ export type VacancyData = {
   preferred_skills: any;
   benefits: any;
   application_deadline: string | null;
+  prerequisite_assessments?: any;
+  prerequisite_learning_content?: any;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -67,6 +70,7 @@ export default async function VacanciesPage() {
       location_state,
       location_city,
       is_remote,
+      work_location,
       employment_type,
       experience_level,
       salary_range_min,
@@ -76,6 +80,8 @@ export default async function VacanciesPage() {
       preferred_skills,
       benefits,
       application_deadline,
+      prerequisite_assessments,
+      prerequisite_learning_content,
       is_active,
       created_at,
       updated_at,
@@ -111,6 +117,14 @@ export default async function VacanciesPage() {
     organization: vacancy.organizations,
     applications_count: appCountMap.get(vacancy.id) || 0,
   }));
+
+  // Fetch organizations for admin create-vacancy modal (org selector)
+  const { data: orgsData } = await adminClient
+    .from('organizations')
+    .select('id, name')
+    .eq('is_active', true)
+    .order('name');
+  const organizations = (orgsData || []).map((o: { id: string; name: string }) => ({ id: o.id, name: o.name }));
 
   // Calculate stats
   const now = new Date();
@@ -148,7 +162,7 @@ export default async function VacanciesPage() {
 
       <AdminKPIGrid kpis={stats} />
 
-      <VacanciesClientTable initialVacancies={vacancies} />
+      <VacanciesClientTable initialVacancies={vacancies} organizations={organizations} />
     </div>
   );
 }

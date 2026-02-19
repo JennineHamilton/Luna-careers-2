@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bell, Award, AlertCircle, GraduationCap, Sparkles } from 'lucide-react';
+import { Bell, Award, AlertCircle, GraduationCap, Sparkles, FileText } from 'lucide-react';
 import {
   LunaDropdownMenu,
   LunaDropdownMenuTrigger,
   LunaDropdownMenuContent,
+  LunaEmptyState,
+  LunaSkeleton,
 } from '@/components/luna';
 import { useRouter } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
@@ -26,7 +28,16 @@ interface Notification {
   };
 }
 
-export default function NotificationsMenu() {
+interface NotificationsMenuProps {
+  /** When 'organization', only org-scoped notifications are shown (requires organizationSlug). */
+  scope?: 'personal' | 'organization';
+  organizationSlug?: string;
+}
+
+export default function NotificationsMenu({
+  scope = 'personal',
+  organizationSlug,
+}: NotificationsMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,17 +45,24 @@ export default function NotificationsMenu() {
   const [showTransactionHistory, setShowTransactionHistory] = useState(false);
   const router = useRouter();
 
-  // Fetch notifications when component mounts or dropdown opens
+  // Fetch notifications when dropdown opens or scope/slug changes
   useEffect(() => {
     if (isOpen) {
       fetchNotifications();
     }
-  }, [isOpen]);
+  }, [isOpen, scope, organizationSlug]);
 
   const fetchNotifications = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/notifications?limit=10');
+      const params = new URLSearchParams({ limit: '10' });
+      if (scope === 'organization' && organizationSlug) {
+        params.set('scope', 'organization');
+        params.set('organization_slug', organizationSlug);
+      } else {
+        params.set('scope', 'personal');
+      }
+      const response = await fetch(`/api/notifications?${params}`);
       if (response.ok) {
         const data = await response.json();
         setNotifications(data.notifications || []);
@@ -97,6 +115,10 @@ export default function NotificationsMenu() {
       case 'enrollment_confirmed':
       case 'payment_approved':
         return <GraduationCap className="w-4 h-4 text-luna-gray-600" />;
+      case 'new_application':
+      case 'application_status_changed':
+      case 'application_withdrawn':
+        return <FileText className="w-4 h-4 text-luna-gray-600" />;
       default:
         return <Bell className="w-4 h-4 text-luna-gray-600" />;
     }
@@ -135,16 +157,28 @@ export default function NotificationsMenu() {
         {/* Notifications List */}
         <div className="max-h-[450px] overflow-y-auto">
           {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-6 h-6 border-2 border-luna-gray-300 border-t-luna-blue rounded-full animate-spin" />
+            <div className="divide-y divide-luna-border-light px-4 py-3 space-y-0">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="flex items-start gap-3 py-3">
+                  <LunaSkeleton variant="rectangular" width={32} height={32} className="shrink-0 rounded-lg" />
+                  <div className="flex-1 min-w-0 space-y-2">
+                    <LunaSkeleton variant="text" width="70%" height={14} />
+                    <LunaSkeleton variant="text" width="100%" height={12} />
+                    <LunaSkeleton variant="text" width="40%" height={12} />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : notifications.length === 0 ? (
-            <div className="text-center py-12 px-4">
-              <div className="w-12 h-12 bg-luna-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Bell className="w-6 h-6 text-luna-gray-400" />
-              </div>
-              <p className="text-sm font-medium text-luna-gray-900 mb-1">No notifications yet</p>
-              <p className="text-xs text-luna-gray-500">We'll notify you when something arrives</p>
+            <div className="p-4">
+              <LunaEmptyState
+                icon={Bell}
+                title="No notifications yet"
+                description="We'll notify you when something arrives"
+                size="sm"
+                showBackground
+                iconBackground="gray"
+              />
             </div>
           ) : (
             <div className="divide-y divide-luna-border-light">
@@ -159,7 +193,7 @@ export default function NotificationsMenu() {
                     }`}
                   >
                     {/* Icon */}
-                    <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-luna-gray-100 rounded-lg">
+                    <div className="shrink-0 w-8 h-8 flex items-center justify-center bg-luna-gray-100 rounded-lg">
                       {getNotificationIcon(notification.type)}
                     </div>
 
@@ -170,7 +204,7 @@ export default function NotificationsMenu() {
                           {notification.title}
                         </h4>
                         {!notification.is_read && (
-                          <div className="flex-shrink-0 w-2 h-2 bg-luna-blue rounded-full mt-1" />
+                          <div className="shrink-0 w-2 h-2 bg-luna-blue rounded-full mt-1" />
                         )}
                       </div>
                       <p className={`text-xs text-luna-gray-600 leading-snug mb-1.5 ${isExpanded ? '' : 'line-clamp-2'}`}>
@@ -211,11 +245,15 @@ export default function NotificationsMenu() {
             <button
               onClick={() => {
                 setIsOpen(false);
-                router.push('/u/notifications');
+                if (scope === 'organization' && organizationSlug) {
+                  router.push(`/org/${organizationSlug}/applicants`);
+                } else {
+                  router.push('/u/notifications');
+                }
               }}
               className="w-full text-center text-xs font-medium text-luna-blue hover:text-luna-navy transition-colors py-1"
             >
-              View all notifications
+              {scope === 'organization' ? 'View applicants' : 'View all notifications'}
             </button>
           </div>
         )}

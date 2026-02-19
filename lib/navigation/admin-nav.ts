@@ -16,6 +16,7 @@ export const adminNavigation: NavSection[] = [
     items: [
       { label: 'Users', href: '/cmd/users', icon: 'Users' },
       { label: 'Employers', href: '/cmd/employers', icon: 'Building2' },
+      { label: 'Vacancies', href: '/cmd/vacancies', icon: 'Briefcase' },
       { label: 'Team', href: '/cmd/team', icon: 'UserCog' },
     ],
   },

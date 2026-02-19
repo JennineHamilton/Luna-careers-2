@@ -273,19 +273,19 @@ export function JobDetailsClient({
     setError(null);
 
     try {
-      const supabase = createClient();
-
-      const { error: insertError } = await supabase
-        .from('job_applications')
-        .insert({
-          user_id: userId,
+      const response = await fetch('/api/jobs/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           vacancy_id: vacancy.id,
           consent_given: consentGiven,
-          status: 'pending',
-        });
+        }),
+      });
 
-      if (insertError) {
-        throw insertError;
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit application');
       }
 
       setApplyModalOpen(false);

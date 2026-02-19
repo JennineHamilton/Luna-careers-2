@@ -273,6 +273,7 @@ export async function PATCH(
           .from('notifications')
           .insert({
             user_id: application.user_id,
+            scope: 'personal',
             type: 'scholarship_approved',
             title: `🎉 Scholarship Approved!`,
             message: discountPercentage === 100
@@ -328,6 +329,7 @@ export async function PATCH(
         .from('notifications')
         .insert({
           user_id: application.user_id,
+          scope: 'personal',
           type: 'scholarship_rejected',
           title: 'Scholarship Application Update',
           message: `Your ${scholarshipName} application for ${contentTitle} was not approved at this time.`,

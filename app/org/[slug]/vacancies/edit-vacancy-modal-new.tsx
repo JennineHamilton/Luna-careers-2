@@ -31,6 +31,8 @@ interface EditVacancyModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   vacancy: VacancyData | null;
+  /** When true, submit via admin API (platform admin). */
+  useAdminApi?: boolean;
   onSuccess?: () => void;
 }
 
@@ -58,6 +60,7 @@ export function EditVacancyModal({
   open,
   onOpenChange,
   vacancy,
+  useAdminApi = false,
   onSuccess,
 }: EditVacancyModalProps) {
   const [step, setStep] = useState<Step>('basic');
@@ -347,40 +350,76 @@ export function EditVacancyModal({
     setLoading(true);
     setError('');
 
+    const countryName = country[0] ? Country.getCountryByCode(country[0])?.name || null : null;
+    const stateName = country[0] && state[0] ? State.getStateByCodeAndCountry(state[0], country[0])?.name || null : null;
+    const cityName = city[0] || null;
+
+    const prerequisiteAssessmentsData = prerequisiteAssessments.map(id => {
+      const assessment = assessments.find(a => a.id === id);
+      return assessment ? {
+        id: assessment.id,
+        type: assessment.type,
+        title: assessment.title,
+        category: assessment.category,
+      } : null;
+    }).filter(Boolean);
+
+    const prerequisiteLearningContentData = prerequisiteLearningContent.map(id => {
+      const content = learningContent.find(c => c.id === id);
+      return content ? {
+        id: content.id,
+        type: content.type,
+        title: content.title,
+      } : null;
+    }).filter(Boolean);
+
     try {
+      if (useAdminApi) {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          setError('You must be logged in');
+          setLoading(false);
+          return;
+        }
+        const response = await fetch('/api/admin/vacancies/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+          body: JSON.stringify({
+            vacancy_id: vacancy.id,
+            title: title.trim(),
+            description: description.trim(),
+            responsibilities: responsibilities.trim() || null,
+            requirements: requirements.trim() || null,
+            employment_type: employmentType,
+            experience_level: experienceLevel,
+            is_remote: workLocation === 'remote',
+            location_city: workLocation === 'remote' ? null : cityName,
+            location_state: workLocation === 'remote' ? null : stateName,
+            location_country: workLocation === 'remote' ? null : countryName,
+            salary_range_min: salaryMin ? parseInt(salaryMin) : null,
+            salary_range_max: salaryMax ? parseInt(salaryMax) : null,
+            required_skills: requiredSkills,
+            preferred_skills: preferredSkills,
+            application_deadline: deadline ? deadline.toISOString() : null,
+            prerequisite_assessments: prerequisiteAssessmentsData,
+            prerequisite_learning_content: prerequisiteLearningContentData,
+          }),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'Failed to update vacancy');
+        onSuccess?.();
+        handleClose();
+        return;
+      }
+
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
-
       if (!session) {
         setError('You must be logged in');
         setLoading(false);
         return;
       }
-
-      // Get location names from ISO codes
-      const countryName = country[0] ? Country.getCountryByCode(country[0])?.name || null : null;
-      const stateName = country[0] && state[0] ? State.getStateByCodeAndCountry(state[0], country[0])?.name || null : null;
-      const cityName = city[0] || null;
-
-      // Build prerequisite arrays with full details
-      const prerequisiteAssessmentsData = prerequisiteAssessments.map(id => {
-        const assessment = assessments.find(a => a.id === id);
-        return assessment ? {
-          id: assessment.id,
-          type: assessment.type,
-          title: assessment.title,
-          category: assessment.category,
-        } : null;
-      }).filter(Boolean);
-
-      const prerequisiteLearningContentData = prerequisiteLearningContent.map(id => {
-        const content = learningContent.find(c => c.id === id);
-        return content ? {
-          id: content.id,
-          type: content.type,
-          title: content.title,
-        } : null;
-      }).filter(Boolean);
 
       const { error: updateError } = await supabase
         .from('vacancies')
@@ -405,10 +444,7 @@ export function EditVacancyModal({
         })
         .eq('id', vacancy.id);
 
-      if (updateError) {
-        throw updateError;
-      }
-
+      if (updateError) throw updateError;
       onSuccess?.();
       handleClose();
     } catch (err) {

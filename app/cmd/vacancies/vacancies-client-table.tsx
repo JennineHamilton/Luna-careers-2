@@ -10,10 +10,13 @@ import { LunaButton } from '@/components/luna/button';
 import { LunaDropdownMenu, LunaDropdownMenuTrigger, LunaDropdownMenuContent, LunaDropdownMenuItem } from '@/components/luna/dropdown-menu';
 import { Briefcase, MoreVertical, Eye, Edit, Ban } from 'lucide-react';
 import type { VacancyData } from './page';
+import type { Database } from '@/types/database.types';
+
+type VacancyRow = Database['public']['Tables']['vacancies']['Row'];
 import { getInitials, formatDateTime } from '@/lib/utils/formatters';
 import Image from 'next/image';
-import { CreateVacancyModal } from './create-vacancy-modal';
-import { EditVacancyModal } from './edit-vacancy-modal-new';
+import { CreateVacancyModal } from '@/app/org/[slug]/vacancies/create-vacancy-modal-new';
+import { EditVacancyModal } from '@/app/org/[slug]/vacancies/edit-vacancy-modal-new';
 import { SuspendVacancyModal } from './suspend-vacancy-modal';
 
 function formatEmploymentType(type: string): string {
@@ -124,11 +127,17 @@ const columns: DataTableColumn<VacancyData>[] = [
   },
 ];
 
-interface VacanciesClientTableProps {
-  initialVacancies: VacancyData[];
+interface OrganizationOption {
+  id: string;
+  name: string;
 }
 
-export function VacanciesClientTable({ initialVacancies }: VacanciesClientTableProps) {
+interface VacanciesClientTableProps {
+  initialVacancies: VacancyData[];
+  organizations?: OrganizationOption[];
+}
+
+export function VacanciesClientTable({ initialVacancies, organizations = [] }: VacanciesClientTableProps) {
   const router = useRouter();
   const [searchValue, setSearchValue] = useState('');
   const [selectedRows, setSelectedRows] = useState<VacancyData[]>([]);
@@ -222,13 +231,16 @@ export function VacanciesClientTable({ initialVacancies }: VacanciesClientTableP
         open={createVacancyModalOpen}
         onOpenChange={setCreateVacancyModalOpen}
         onSuccess={handleVacancyCreated}
+        useAdminApi
+        organizations={organizations}
       />
 
       <EditVacancyModal
         open={editVacancyModalOpen}
         onOpenChange={setEditVacancyModalOpen}
         onSuccess={handleVacancyUpdated}
-        vacancy={selectedVacancy}
+        vacancy={selectedVacancy as VacancyRow | null}
+        useAdminApi
       />
 
       <SuspendVacancyModal

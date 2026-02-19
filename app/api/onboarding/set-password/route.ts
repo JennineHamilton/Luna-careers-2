@@ -211,6 +211,7 @@ export async function POST(request: NextRequest) {
         .from('notifications')
         .insert({
           user_id: user.id,
+          scope: 'personal',
           type: 'welcome',
           title: `Welcome to Luna Careers, ${firstName}! 🎉`,
           message: isPersonalUser

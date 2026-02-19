@@ -47,6 +47,8 @@ export default function OrganizationPortalLayout({
       navSections={organizationNavigation}
       showContextSwitcher={true}
       showPointsTracker={true}
+      notificationScope="organization"
+      organizationSlug={slug}
     >
       {children}
     </MainLayout>

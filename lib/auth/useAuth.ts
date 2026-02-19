@@ -107,36 +107,51 @@ export function useAuth(): UseAuthReturn {
   }, [supabase, fetchExtendedUserData]);
 
   useEffect(() => {
-    // Get initial session
+    let cancelled = false;
+
     const getInitialSession = async () => {
       setIsLoading(true);
       try {
-        const { data: { user: supabaseUser } } = await supabase.auth.getUser();
+        // Use getSession() first: it reads from cookie/cache and avoids a server
+        // round-trip, so the header shows the user immediately on first load
+        // instead of flashing "U" until getUser() returns.
+        const { data: { session } } = await supabase.auth.getSession();
+        const supabaseUser = session?.user ?? null;
+        if (cancelled) return;
         const extendedUser = await fetchExtendedUserData(supabaseUser);
+        if (cancelled) return;
         setUser(extendedUser);
       } catch (error) {
-        console.error('Failed to get session:', error);
-        setUser(null);
+        if (!cancelled) {
+          console.error('Failed to get session:', error);
+          setUser(null);
+        }
       } finally {
-        setIsLoading(false);
+        if (!cancelled) setIsLoading(false);
       }
     };
 
     getInitialSession();
 
-    // Listen for auth changes
+    // Listen for auth changes (including INITIAL_SESSION when session is restored)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        if (cancelled) return;
+        if (
+          event === 'INITIAL_SESSION' ||
+          event === 'SIGNED_IN' ||
+          event === 'TOKEN_REFRESHED'
+        ) {
           const extendedUser = await fetchExtendedUserData(session?.user ?? null);
-          setUser(extendedUser);
+          if (!cancelled) setUser(extendedUser);
         } else if (event === 'SIGNED_OUT') {
-          setUser(null);
+          if (!cancelled) setUser(null);
         }
       }
     );
 
     return () => {
+      cancelled = true;
       subscription.unsubscribe();
     };
   }, [supabase, fetchExtendedUserData]);

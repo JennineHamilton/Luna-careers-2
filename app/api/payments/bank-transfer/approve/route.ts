@@ -155,6 +155,7 @@ export async function POST(request: NextRequest) {
         // In-app notification
         await supabase.from('notifications').insert({
           user_id: submission.user_id,
+          scope: 'personal',
           type: 'payment_approved',
           title: 'Payment Approved',
           message: `Your bank transfer of $${submission.amount_paid} has been approved. You are now enrolled!`,
@@ -201,6 +202,7 @@ export async function POST(request: NextRequest) {
         // In-app notification
         await supabase.from('notifications').insert({
           user_id: submission.user_id,
+          scope: 'personal',
           type: 'payment_rejected',
           title: 'Payment Not Approved',
           message: `Your bank transfer of $${submission.amount_paid} could not be verified.${admin_notes ? ` Reason: ${admin_notes}` : ''} Please contact support for assistance.`,

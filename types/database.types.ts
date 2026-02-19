@@ -2012,6 +2012,8 @@ export interface Database {
         Row: {
           id: string
           user_id: string
+          scope: string
+          organization_id: string | null
           type: string
           title: string
           message: string
@@ -2025,6 +2027,8 @@ export interface Database {
         Insert: {
           id?: string
           user_id: string
+          scope?: string
+          organization_id?: string | null
           type: string
           title: string
           message: string
@@ -2037,6 +2041,8 @@ export interface Database {
         }
         Update: {
           user_id?: string
+          scope?: string
+          organization_id?: string | null
           type?: string
           title?: string
           message?: string

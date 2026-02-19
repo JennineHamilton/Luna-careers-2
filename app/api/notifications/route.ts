@@ -1,6 +1,6 @@
 /**
  * API Route: Notifications
- * GET /api/notifications - Get user's notifications
+ * GET /api/notifications - Get user's notifications (personal or organization-scoped)
  * PATCH /api/notifications/[id] - Mark notification as read
  */
 
@@ -9,7 +9,9 @@ import { createClient } from '@/lib/supabase/server';
 
 /**
  * GET /api/notifications
- * Get all notifications for the authenticated user
+ * Get notifications for the authenticated user.
+ * - scope=personal (default): only personal notifications (learning, profile, etc.)
+ * - scope=organization&organization_slug=xyz: only notifications for that org (e.g. new applications)
  */
 export async function GET(request: NextRequest) {
   try {
@@ -29,14 +31,39 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const limit = parseInt(searchParams.get('limit') || '50');
     const unreadOnly = searchParams.get('unread_only') === 'true';
+    const scope = searchParams.get('scope') || 'personal';
+    const organizationSlug = searchParams.get('organization_slug');
 
-    // Build query
     let query = supabase
       .from('notifications')
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(limit);
+
+    if (scope === 'organization') {
+      if (!organizationSlug) {
+        return NextResponse.json(
+          { error: 'organization_slug required when scope=organization' },
+          { status: 400 }
+        );
+      }
+      const { data: org } = await supabase
+        .from('organizations')
+        .select('id')
+        .eq('slug', organizationSlug)
+        .single();
+      if (!org?.id) {
+        return NextResponse.json(
+          { error: 'Organization not found' },
+          { status: 404 }
+        );
+      }
+      query = query.eq('scope', 'organization').eq('organization_id', org.id);
+    } else {
+      // personal: scope is 'personal' or null (legacy)
+      query = query.or('scope.eq.personal,scope.is.null').is('organization_id', null);
+    }
 
     // Filter by unread if requested
     if (unreadOnly) {
