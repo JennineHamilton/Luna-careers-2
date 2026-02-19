@@ -134,7 +134,7 @@ export async function GET() {
         total_questions,
         cognitive_insights (
           insight_type,
-          category,
+          domain,
           title,
           description
         )

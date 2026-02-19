@@ -34,7 +34,7 @@ export function CognitiveSection({ data }: CognitiveSectionProps) {
           *,
           cognitive_insights (
             insight_type,
-            category,
+            domain,
             title,
             description
           )
