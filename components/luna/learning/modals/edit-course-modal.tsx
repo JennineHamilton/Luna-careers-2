@@ -289,8 +289,10 @@ export function EditCourseModal({
     setCurrentStep(0); // Reset wizard to first step
     onOpenChange(false);
   };
-
-  if (!course) {
+  // Only unmount entirely when the dialog is closed.
+  // When it's open but course data is still loading or failed,
+  // we still want to show the shell + any error/loading state.
+  if (!open) {
     return null;
   }
 
@@ -316,16 +318,24 @@ export function EditCourseModal({
             </Alert>
           )}
 
-          <CourseFormWizard
-            ref={wizardRef}
-            initialData={course}
-            initialModules={initialModules}
-            initialScholarships={initialScholarships}
-            onSubmit={handleSubmit}
-            loading={loading}
-            onStepChange={setCurrentStep}
-            onValidationChange={setIsStepValid}
-          />
+          {!course && !error && (
+            <div className="py-8 text-center text-sm text-luna-gray-600">
+              Loading course details…
+            </div>
+          )}
+
+          {course && (
+            <CourseFormWizard
+              ref={wizardRef}
+              initialData={course}
+              initialModules={initialModules}
+              initialScholarships={initialScholarships}
+              onSubmit={handleSubmit}
+              loading={loading}
+              onStepChange={setCurrentStep}
+              onValidationChange={setIsStepValid}
+            />
+          )}
         </LunaDialogBody>
 
         {/* Sticky Footer */}
