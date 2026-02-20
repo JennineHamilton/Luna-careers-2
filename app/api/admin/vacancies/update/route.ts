@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
       application_deadline,
       prerequisite_assessments,
       prerequisite_learning_content,
+      job_category_id,
     } = validation.data;
 
     // Use admin client to bypass RLS
@@ -68,6 +69,7 @@ export async function POST(request: NextRequest) {
     if (application_deadline !== undefined) updatePayload.application_deadline = application_deadline;
     if (prerequisite_assessments !== undefined) updatePayload.prerequisite_assessments = prerequisite_assessments;
     if (prerequisite_learning_content !== undefined) updatePayload.prerequisite_learning_content = prerequisite_learning_content;
+    if (job_category_id !== undefined) updatePayload.job_category_id = job_category_id;
 
     const { data: vacancy, error: updateError } = await adminClient
       .from('vacancies')

@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
       application_deadline,
       prerequisite_assessments,
       prerequisite_learning_content,
+      job_category_id,
     } = validation.data;
 
     // Use admin client to bypass RLS
@@ -72,6 +73,7 @@ export async function POST(request: NextRequest) {
         application_deadline: application_deadline || null,
         prerequisite_assessments: prerequisite_assessments ?? [],
         prerequisite_learning_content: prerequisite_learning_content ?? [],
+        job_category_id: job_category_id || null,
         benefits: [], // Admin doesn't set benefits - comes from org profile
         is_active: true,
         created_by: user.id,

@@ -5,9 +5,11 @@ import type { Database } from '@/types/database.types';
 
 type Vacancy = Database['public']['Tables']['vacancies']['Row'];
 type Organization = Database['public']['Tables']['organizations']['Row'];
+type JobCategory = Database['public']['Tables']['job_categories']['Row'];
 
 type VacancyWithOrganization = Vacancy & {
   organizations: Organization;
+  job_categories: JobCategory | null;
   has_applied?: boolean;
 };
 
@@ -21,12 +23,19 @@ export default async function JobsPage() {
     redirect('/login');
   }
 
-  // Fetch all active vacancies with organization details
+  // Fetch job categories for filter pills
+  const { data: jobCategories } = await supabase
+    .from('job_categories')
+    .select('id, name')
+    .order('sort_order', { ascending: true });
+
+  // Fetch all active vacancies with organization and category
   const { data: vacancies, error: vacanciesError } = await supabase
     .from('vacancies')
     .select(`
       *,
-      organizations (*)
+      organizations (*),
+      job_categories (id, name)
     `)
     .eq('is_active', true)
     .order('created_at', { ascending: false });
@@ -57,6 +66,7 @@ export default async function JobsPage() {
   return (
     <JobsPageClient
       vacancies={vacanciesWithApplicationStatus}
+      jobCategories={jobCategories ?? []}
       userId={user.id}
     />
   );

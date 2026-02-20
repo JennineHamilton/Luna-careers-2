@@ -93,6 +93,7 @@ export function CreateVacancyModal({
   const [skills, setSkills] = useState<Skill[]>([]);
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [learningContent, setLearningContent] = useState<LearningContent[]>([]);
+  const [jobCategories, setJobCategories] = useState<{ id: string; name: string }[]>([]);
 
   // Form data - Step 1: Basic Information
   const [title, setTitle] = useState('');
@@ -103,6 +104,7 @@ export function CreateVacancyModal({
   const [state, setState] = useState<string[]>([]);
   const [city, setCity] = useState<string[]>([]);
   const [employmentType, setEmploymentType] = useState<EmploymentType>('full-time');
+  const [jobCategoryId, setJobCategoryId] = useState<string>('');
 
   // Form data - Step 2: Job Details
   const [responsibilities, setResponsibilities] = useState('');
@@ -258,6 +260,15 @@ export function CreateVacancyModal({
     }
 
     setLearningContent(allLearningContent);
+
+    // Fetch job categories from API (server-side so list always available)
+    try {
+      const res = await fetch('/api/job-categories');
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && Array.isArray(json.categories)) setJobCategories(json.categories);
+    } catch {
+      // leave jobCategories as []
+    }
   };
 
   const effectiveOrganizationId = organizationId || selectedOrganizationId;
@@ -369,6 +380,7 @@ export function CreateVacancyModal({
             application_deadline: deadline ? deadline.toISOString() : null,
             prerequisite_assessments: prerequisiteAssessmentsData,
             prerequisite_learning_content: prerequisiteLearningContentData,
+            job_category_id: jobCategoryId || null,
           }),
         });
         const data = await response.json().catch(() => ({}));
@@ -409,6 +421,7 @@ export function CreateVacancyModal({
           application_deadline: deadline ? deadline.toISOString() : null,
           prerequisite_assessments: prerequisiteAssessmentsData,
           prerequisite_learning_content: prerequisiteLearningContentData,
+          job_category_id: jobCategoryId || null,
           is_active: true,
           created_by: session.user.id,
         });
@@ -434,6 +447,7 @@ export function CreateVacancyModal({
     setState([]);
     setCity([]);
     setEmploymentType('full-time');
+    setJobCategoryId('');
     setResponsibilities('');
     setRequirements('');
     setRequiredSkills([]);
@@ -612,6 +626,14 @@ export function CreateVacancyModal({
                   options={workLocationOptions}
                   value={workLocation}
                   onValueChange={(value) => setWorkLocation(value as 'remote' | 'in-office' | 'hybrid')}
+                />
+                <LunaSearchableSelect
+                  label="Job Category"
+                  placeholder="Select category (e.g. Customer Service, Programming)"
+                  searchPlaceholder="Search categories..."
+                  options={jobCategories.map(c => ({ value: c.id, label: c.name }))}
+                  value={jobCategoryId}
+                  onValueChange={setJobCategoryId}
                 />
               </div>
 

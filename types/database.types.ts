@@ -3586,6 +3586,23 @@ export interface Database {
           },
         ]
       }
+      job_categories: {
+        Row: {
+          id: string
+          name: string
+          sort_order: number | null
+        }
+        Insert: {
+          id?: string
+          name: string
+          sort_order?: number | null
+        }
+        Update: {
+          name?: string
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
       vacancies: {
         Row: {
           id: string
@@ -3615,6 +3632,7 @@ export interface Database {
           work_location: Database['public']['Enums']['work_location_type'] | null
           prerequisite_assessments: Json | null
           prerequisite_learning_content: Json | null
+          job_category_id: string | null
         }
         Insert: {
           id?: string
@@ -3644,6 +3662,7 @@ export interface Database {
           work_location?: Database['public']['Enums']['work_location_type'] | null
           prerequisite_assessments?: Json | null
           prerequisite_learning_content?: Json | null
+          job_category_id?: string | null
         }
         Update: {
           organization_id?: string
@@ -3672,6 +3691,7 @@ export interface Database {
           work_location?: Database['public']['Enums']['work_location_type'] | null
           prerequisite_assessments?: Json | null
           prerequisite_learning_content?: Json | null
+          job_category_id?: string | null
         }
         Relationships: [
           {
@@ -3679,6 +3699,13 @@ export interface Database {
             columns: ['organization_id']
             isOneToOne: false
             referencedRelation: 'organizations'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'undefined'
+            columns: ['job_category_id']
+            isOneToOne: false
+            referencedRelation: 'job_categories'
             referencedColumns: ['id']
           },
         ]

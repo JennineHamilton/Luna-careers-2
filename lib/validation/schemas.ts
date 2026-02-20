@@ -416,6 +416,7 @@ export const vacancyCreateSchema = z.object({
   application_deadline: z.string().optional().nullable(),
   prerequisite_assessments: z.array(prerequisiteAssessmentSchema).optional(),
   prerequisite_learning_content: z.array(prerequisiteLearningContentSchema).optional(),
+  job_category_id: z.string().uuid().optional().nullable(),
 });
 
 export const vacancyUpdateSchema = z.object({
@@ -438,6 +439,7 @@ export const vacancyUpdateSchema = z.object({
   application_deadline: z.string().optional().nullable(),
   prerequisite_assessments: z.array(prerequisiteAssessmentSchema).optional(),
   prerequisite_learning_content: z.array(prerequisiteLearningContentSchema).optional(),
+  job_category_id: z.string().uuid().optional().nullable(),
 });
 
 // ============================================================
