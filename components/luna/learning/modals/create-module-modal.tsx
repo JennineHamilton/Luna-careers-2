@@ -124,10 +124,23 @@ export function CreateModuleModal({
         body: JSON.stringify(moduleData),
       });
 
+      if (!response.ok) {
+        let errorMessage = 'Failed to create module';
+        try {
+          const errorResult = await response.json();
+          errorMessage = errorResult.error || errorResult.details || errorMessage;
+        } catch {
+          errorMessage = `Server error: ${response.status} ${response.statusText}`;
+        }
+        setError(errorMessage);
+        setLoading(false);
+        return;
+      }
+
       const result = await response.json();
 
-      if (!response.ok) {
-        setError(result.error || 'Failed to create module');
+      if (!result.module || !result.module.id) {
+        setError('Module was created but no module ID was returned');
         setLoading(false);
         return;
       }
@@ -137,53 +150,67 @@ export function CreateModuleModal({
       const quizzes = formData.content.filter(item => item.type === 'quiz');
 
       // Create module_lessons relationships
-      if (lessons.length > 0 && result.module) {
-        const moduleLessons = lessons.map((lesson) => ({
-          module_id: result.module.id,
-          lesson_id: lesson.id,
-          sort_order: lesson.sort_order,
-          is_required: lesson.is_required,
-        }));
+      if (lessons.length > 0) {
+        try {
+          const moduleLessons = lessons.map((lesson) => ({
+            module_id: result.module!.id,
+            lesson_id: lesson.id,
+            sort_order: lesson.sort_order,
+            is_required: lesson.is_required,
+          }));
 
-        const { error: lessonsError } = await supabase
-          .from('module_lessons')
-          .insert(moduleLessons);
+          const { error: lessonsError } = await supabase
+            .from('module_lessons')
+            .insert(moduleLessons);
 
-        if (lessonsError) {
-          console.error('Error creating module lessons:', lessonsError);
-          setError('Module created but failed to add lessons');
+          if (lessonsError) {
+            console.error('Error creating module lessons:', lessonsError);
+            setError(`Module created but failed to add lessons: ${lessonsError.message}`);
+            setLoading(false);
+            return;
+          }
+        } catch (err) {
+          console.error('Exception creating module lessons:', err);
+          setError(`Module created but failed to add lessons: ${err instanceof Error ? err.message : 'Unknown error'}`);
           setLoading(false);
           return;
         }
       }
 
       // Create module_quizzes relationships
-      if (quizzes.length > 0 && result.module) {
-        const moduleQuizzes = quizzes.map((quiz) => ({
-          module_id: result.module.id,
-          quiz_id: quiz.id,
-          sort_order: quiz.sort_order,
-          is_required: quiz.is_required,
-        }));
+      if (quizzes.length > 0) {
+        try {
+          const moduleQuizzes = quizzes.map((quiz) => ({
+            module_id: result.module!.id,
+            quiz_id: quiz.id,
+            sort_order: quiz.sort_order,
+            is_required: quiz.is_required,
+          }));
 
-        const { error: quizzesError } = await supabase
-          .from('module_quizzes')
-          .insert(moduleQuizzes);
+          const { error: quizzesError } = await supabase
+            .from('module_quizzes')
+            .insert(moduleQuizzes);
 
-        if (quizzesError) {
-          console.error('Error creating module quizzes:', quizzesError);
-          setError('Module created but failed to add quizzes');
+          if (quizzesError) {
+            console.error('Error creating module quizzes:', quizzesError);
+            setError(`Module created but failed to add quizzes: ${quizzesError.message}`);
+            setLoading(false);
+            return;
+          }
+        } catch (err) {
+          console.error('Exception creating module quizzes:', err);
+          setError(`Module created but failed to add quizzes: ${err instanceof Error ? err.message : 'Unknown error'}`);
           setLoading(false);
           return;
         }
       }
 
       // Create scholarship_content relationships
-      if (formData.scholarships && formData.scholarships.length > 0 && result.module) {
+      if (formData.scholarships && formData.scholarships.length > 0) {
         const scholarshipContent = formData.scholarships.map((scholarshipId) => ({
           scholarship_id: scholarshipId,
           content_type: 'module',
-          content_id: result.module.id,
+          content_id: result.module!.id,
         }));
 
         const { error: scholarshipError } = await supabase

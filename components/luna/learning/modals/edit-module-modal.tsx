@@ -225,86 +225,107 @@ export function EditModuleModal({
         body: JSON.stringify(moduleData),
       });
 
-      const result = await response.json();
-
       if (!response.ok) {
-        setError(result.error || 'Failed to update module');
+        let errorMessage = 'Failed to update module';
+        try {
+          const errorResult = await response.json();
+          errorMessage = errorResult.error || errorResult.details || errorMessage;
+        } catch {
+          errorMessage = `Server error: ${response.status} ${response.statusText}`;
+        }
+        setError(errorMessage);
         setLoading(false);
         return;
       }
+
+      const result = await response.json();
 
       // Split content into lessons and quizzes
       const lessons = formData.content.filter(item => item.type === 'lesson');
       const quizzes = formData.content.filter(item => item.type === 'quiz');
 
       // Update module_lessons relationships
-      // Delete existing lessons
-      const { error: deleteError } = await supabase
-        .from('module_lessons')
-        .delete()
-        .eq('module_id', moduleId);
-
-      if (deleteError) {
-        console.error('Error deleting old module lessons:', deleteError);
-        setError('Module updated but failed to update lessons');
-        setLoading(false);
-        return;
-      }
-
-      // Insert new lessons
-      if (lessons.length > 0) {
-        const moduleLessons = lessons.map((lesson) => ({
-          module_id: moduleId,
-          lesson_id: lesson.id,
-          sort_order: lesson.sort_order,
-          is_required: lesson.is_required,
-        }));
-
-        const { error: insertError } = await supabase
+      try {
+        // Delete existing lessons
+        const { error: deleteError } = await supabase
           .from('module_lessons')
-          .insert(moduleLessons);
+          .delete()
+          .eq('module_id', moduleId);
 
-        if (insertError) {
-          console.error('Error inserting new module lessons:', insertError);
-          setError('Module updated but failed to add lessons');
+        if (deleteError) {
+          console.error('Error deleting old module lessons:', deleteError);
+          setError(`Module updated but failed to update lessons: ${deleteError.message}`);
           setLoading(false);
           return;
         }
+
+        // Insert new lessons
+        if (lessons.length > 0) {
+          const moduleLessons = lessons.map((lesson) => ({
+            module_id: moduleId,
+            lesson_id: lesson.id,
+            sort_order: lesson.sort_order,
+            is_required: lesson.is_required,
+          }));
+
+          const { error: insertError } = await supabase
+            .from('module_lessons')
+            .insert(moduleLessons);
+
+          if (insertError) {
+            console.error('Error inserting new module lessons:', insertError);
+            setError(`Module updated but failed to add lessons: ${insertError.message}`);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('Exception updating module lessons:', err);
+        setError(`Module updated but failed to update lessons: ${err instanceof Error ? err.message : 'Unknown error'}`);
+        setLoading(false);
+        return;
       }
 
       // Update module_quizzes relationships
-      // Delete existing quizzes
-      const { error: deleteQuizzesError } = await supabase
-        .from('module_quizzes')
-        .delete()
-        .eq('module_id', moduleId);
-
-      if (deleteQuizzesError) {
-        console.error('Error deleting old module quizzes:', deleteQuizzesError);
-        setError('Module updated but failed to update quizzes');
-        setLoading(false);
-        return;
-      }
-
-      // Insert new quizzes
-      if (quizzes.length > 0) {
-        const moduleQuizzes = quizzes.map((quiz) => ({
-          module_id: moduleId,
-          quiz_id: quiz.id,
-          sort_order: quiz.sort_order,
-          is_required: quiz.is_required,
-        }));
-
-        const { error: insertQuizzesError } = await supabase
+      try {
+        // Delete existing quizzes
+        const { error: deleteQuizzesError } = await supabase
           .from('module_quizzes')
-          .insert(moduleQuizzes);
+          .delete()
+          .eq('module_id', moduleId);
 
-        if (insertQuizzesError) {
-          console.error('Error inserting new module quizzes:', insertQuizzesError);
-          setError('Module updated but failed to add quizzes');
+        if (deleteQuizzesError) {
+          console.error('Error deleting old module quizzes:', deleteQuizzesError);
+          setError(`Module updated but failed to update quizzes: ${deleteQuizzesError.message}`);
           setLoading(false);
           return;
         }
+
+        // Insert new quizzes
+        if (quizzes.length > 0) {
+          const moduleQuizzes = quizzes.map((quiz) => ({
+            module_id: moduleId,
+            quiz_id: quiz.id,
+            sort_order: quiz.sort_order,
+            is_required: quiz.is_required,
+          }));
+
+          const { error: insertQuizzesError } = await supabase
+            .from('module_quizzes')
+            .insert(moduleQuizzes);
+
+          if (insertQuizzesError) {
+            console.error('Error inserting new module quizzes:', insertQuizzesError);
+            setError(`Module updated but failed to add quizzes: ${insertQuizzesError.message}`);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('Exception updating module quizzes:', err);
+        setError(`Module updated but failed to update quizzes: ${err instanceof Error ? err.message : 'Unknown error'}`);
+        setLoading(false);
+        return;
       }
 
       // Update scholarship_content relationships
